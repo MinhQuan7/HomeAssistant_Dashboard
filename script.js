@@ -1,3 +1,4 @@
+
 const slider = document.querySelector(".brightness-slider");
 const sliderFill = document.querySelector(".slider-fill");
 const valueDisplay = document.querySelector(".widget-value");
