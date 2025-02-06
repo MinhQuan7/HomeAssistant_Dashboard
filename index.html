@@ -1,0 +1,223 @@
+<html>
+  <head>
+    <title>Smart Home Dashboard</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="sidebar">
+        <i class="fas fa-home active"> </i>
+        <i class="fas fa-bed"> </i>
+        <i class="fas fa-couch"> </i>
+        <i class="fas fa-utensils"> </i>
+        <i class="fas fa-cogs"> </i>
+        <i class="fas fa-bell"> </i>
+        <i class="fas fa-envelope"> </i>
+        <i class="fas fa-user"> </i>
+      </div>
+      <div class="main-content">
+        <div class="nav">
+          <div>
+            <a class="active" href="#"> HOME </a>
+            <a href="#"> BEDROOM </a>
+            <a href="#"> LIVING ROOM </a>
+            <a href="#"> KITCHEN </a>
+          </div>
+          <div>
+            <i class="fas fa-search"> </i>
+            <i class="fas fa-comment-dots"> </i>
+            <i class="fas fa-pen"> </i>
+          </div>
+        </div>
+        <div class="widgets">
+          <div class="widget">
+            <div class="title">Sunny</div>
+            <div class="subtitle">Demo Weather South</div>
+            <div class="value">21.6°C</div>
+            <div class="controls">
+              <img
+                alt="Weather icon"
+                height="50"
+                src="https://storage.googleapis.com/a1aa/image/-qyMDf0gqzgwKo4ObS6RDWfvk60QwRCLtMH7gLB6jNw.jpg"
+                width="50"
+              />
+              <div>
+                <div>Wed 22°C / 15°C</div>
+                <div>Thu 19°C / 8°C</div>
+                <div>Fri 15°C / 9°C</div>
+                <div>Sat 12°C / 6°C</div>
+                <div>Sun 14°C / 7°C</div>
+              </div>
+            </div>
+          </div>
+          <!-- Widget Bed Light -->
+          <div class="widget">
+            <div class="title">Bed Light</div>
+            <div class="content-wrapper">
+              <div class="light-icon" id="bedLightIcon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M12 2C7.58 2 4 5.58 4 10c0 2.52 1.17 4.76 3 6.24V18c0 1.1.9 2 2 2h6c1.1 0 2-.9 2-2v-1.76c1.83-1.48 3-3.72 3-6.24 0-4.42-3.58-8-8-8z"
+                  />
+                </svg>
+              </div>
+              <div class="status">Off</div>
+            </div>
+          </div>
+          <div class="widget">
+            <div class="widget-header">
+              <div class="icon">
+                <svg width="45" height="45" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M12 2C7.58 2 4 5.58 4 10c0 2.52 1.17 4.76 3 6.24V18c0 1.1.9 2 2 2h6c1.1 0 2-.9 2-2v-1.76c1.83-1.48 3-3.72 3-6.24 0-4.42-3.58-8-8-8z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </div>
+              <div class="widget-info">
+                <div class="widget-title">Kitchen Lights</div>
+                <div class="widget-value">71%</div>
+              </div>
+            </div>
+            <div class="slider-container">
+              <div class="slider-track">
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value="71"
+                  class="brightness-slider"
+                />
+                <div class="slider-fill"></div>
+              </div>
+            </div>
+          </div>
+          <div class="widget">
+            <div class="widget-title">Living Room Lights</div>
+            <div class="widget-valueLivingRoom">71%</div>
+            <div class="slider-container">
+              <div class="slider-track">
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value="71"
+                  class="brightness-sliderLivingRom"
+                />
+                <div class="slider-fill-livingRoom"></div>
+              </div>
+            </div>
+          </div>
+          <div class="widget">
+            <div class="title">Humidifier</div>
+            <div class="gauge humidifier">
+              <div class="value">68%</div>
+            </div>
+            <div class="controls">
+              <button class="active">
+                <i class="fas fa-tint"> </i>
+              </button>
+            </div>
+          </div>
+          <div class="widget">
+            <div class="title">HeatPump</div>
+            <div class="gauge heatpump">
+              <div class="value">20°C</div>
+            </div>
+            <div class="controls">
+              <button class="active">
+                <i class="fas fa-fire"> </i>
+              </button>
+            </div>
+          </div>
+          <div class="widget">
+            <div class="title">Artu</div>
+            <div class="subtitle">Docked</div>
+            <div class="controls">
+              <button>
+                <i class="fas fa-play"> </i>
+              </button>
+              <button>
+                <i class="fas fa-stop"> </i>
+              </button>
+              <button>
+                <i class="fas fa-cog"> </i>
+              </button>
+            </div>
+          </div>
+          <div class="widget">
+            <div class="title">Next cleaning</div>
+            <div class="subtitle">In 16 hours</div>
+          </div>
+          <div class="widget">
+            <div class="title">Pergola Roof</div>
+            <div class="gauge pergola">
+              <div class="value">50%</div>
+            </div>
+            <div class="controls">
+              <button class="active"></button>
+            </div>
+          </div>
+          <div class="widget">
+            <div class="title">Living Room Blinds</div>
+            <div class="subtitle">Open - 70%</div>
+            <div class="controls">
+              <button>
+                <i class="fas fa-arrow-up"> </i>
+              </button>
+              <button>
+                <i class="fas fa-arrow-down"> </i>
+              </button>
+            </div>
+          </div>
+          <div class="calendar">
+            <div class="header">
+              <div>
+                <div>May 1 – 7, 2024</div>
+                <div>Today</div>
+              </div>
+              <div>
+                <button>
+                  <i class="fas fa-th"> </i>
+                </button>
+                <button>
+                  <i class="fas fa-bars"> </i>
+                </button>
+              </div>
+            </div>
+            <ul class="events">
+              <li>
+                <div class="time">1:13 PM - 2:13 PM</div>
+                <div class="type">
+                  <span class="current"> </span>
+                  Current Event
+                </div>
+              </li>
+              <li>
+                <div class="time">2:13 PM - 3:13 PM</div>
+                <div class="type">
+                  <span class="future"> </span>
+                  Future Event
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="script.js"></script>
+</html>

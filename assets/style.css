@@ -1,0 +1,489 @@
+/* Base styles */
+:root {
+  --primary: #1976d2;
+  --surface: rgba(47, 46, 46, 0.6);
+  --surface-variant: rgba(45, 45, 45, 0.8);
+  --text-primary: rgba(255, 255, 255, 0.87);
+  --text-secondary: rgba(255, 255, 255, 0.6);
+  --accent: #ff9800;
+}
+
+body {
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+  /* background: linear-gradient(135deg, #1a1a1a, #2d2d2d); */
+  color: var(--text-primary);
+  min-height: 100vh;
+  backdrop-filter: blur(20px);
+  background-image: url(imgs/must1.jpg);
+  /* background-position: center; */
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* Glass morphism container */
+.container {
+  display: flex;
+  min-height: 100vh;
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(10px);
+  /* background-image: url(imgs/violet-pink-back.jpg); */
+}
+
+.container > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Enhanced sidebar */
+.sidebar {
+  width: 80px;
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  transition: width 0.3s ease;
+}
+
+.sidebar i {
+  font-size: 24px;
+  margin: 20px 0;
+  color: var(--text-secondary);
+  transition: all 0.3s ease;
+  padding: 12px;
+  border-radius: 12px;
+}
+
+.sidebar i:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+  color: var(--text-primary);
+}
+
+.sidebar .active {
+  color: var(--primary);
+  background: rgba(25, 118, 210, 0.2);
+}
+
+/* Main content area */
+.main-content {
+  flex: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Navigation */
+.nav {
+  background: var(--surface);
+  padding: 16px 24px;
+  border-radius: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.nav a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.nav a:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.nav a.active {
+  background: var(--primary);
+  color: white;
+}
+
+/* Widget grid */
+.widgets {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+/* Enhanced widgets */
+.widget {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.widget:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.widget::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.widget:hover::before {
+  opacity: 1;
+}
+
+/* Animated gauges */
+.gauge {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin: 20px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gauge::before {
+  content: "";
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  background: var(--surface-variant);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.gauge .value {
+  position: relative;
+  z-index: 2;
+  font-size: 28px;
+  font-weight: 500;
+}
+
+/* Animated gauge variants */
+.gauge.humidifier {
+  background: conic-gradient(
+    from 0deg,
+    #2196f3 0%,
+    #2196f3 68%,
+    transparent 68%
+  );
+  border-radius: 50%;
+  animation: rotate 2s linear infinite;
+}
+
+.gauge.heatpump {
+  background: conic-gradient(
+    from 0deg,
+    #ff5722 0%,
+    #ff5722 20%,
+    transparent 20%
+  );
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.gauge.pergola {
+  background: conic-gradient(
+    from 0deg,
+    #9c27b0 0%,
+    #9c27b0 50%,
+    transparent 50%
+  );
+  border-radius: 50%;
+}
+
+/* Control buttons */
+.widget .controls {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.widget .controls button {
+  background: var(--surface-variant);
+  border: none;
+  color: var(--text-primary);
+  padding: 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: 1;
+}
+
+.widget .controls button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.widget .controls button.active {
+  background: var(--primary);
+  color: white;
+}
+
+/* Calendar styling */
+.calendar {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 24px;
+  grid-column: span 2;
+}
+
+.calendar .events li {
+  padding: 16px;
+  margin: 8px 0;
+  background: var(--surface-variant);
+  border-radius: 12px;
+  border: none;
+  transition: transform 0.3s ease;
+}
+
+.calendar .events li:hover {
+  transform: translateX(8px);
+}
+
+/* Animations */
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Weather widget enhancement */
+.widget .weather-forecast {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.weather-day {
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.weather-day:hover {
+  transform: translateY(-4px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .widgets {
+    grid-template-columns: 1fr;
+  }
+
+  .calendar {
+    grid-column: span 1;
+  }
+
+  .sidebar {
+    width: 60px;
+  }
+}
+
+.light-widget {
+  background: rgba(28, 28, 30, 0.9);
+  border-radius: 16px;
+  padding: 16px;
+  width: 100%;
+  max-width: 300px;
+  box-sizing: border-box;
+}
+
+.widget-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff2d55;
+}
+
+.widget-info {
+  flex: 1;
+}
+
+.widget-title {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.widget-value {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+}
+
+.slider-container {
+  width: 100%;
+  max-width: 300px;
+  height: 52px;
+  box-sizing: border-box;
+  margin-top: 10%;
+}
+
+.slider-fill {
+  position: absolute;
+  background: #ff5a6b;
+  top: 0;
+  left: 0;
+  width: 71%;
+  height: 100%;
+  border-radius: 6px;
+}
+.slider-fill-livingRoom {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 71%;
+  height: 100%;
+  background: #09d2ff;
+  border-radius: 6px;
+}
+.slider-thumb {
+  position: absolute;
+  top: 0;
+  right: 29%; /* 100% - 71% */
+  width: 3px;
+  height: 100%;
+  background: white;
+}
+
+.brightness-slider {
+  width: 100%;
+  height: 5%;
+  -webkit-appearance: none;
+  background: transparent;
+  position: relative;
+  z-index: 2;
+  border-radius: 20px;
+  margin-left: -5%;
+}
+.slider-track {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.brightness-sliderLivingRom {
+  width: 100%;
+  height: 5%;
+  -webkit-appearance: none;
+  background: transparent;
+  position: relative;
+  z-index: 2;
+  border-radius: 20px;
+  margin-left: -5%;
+}
+.brightness-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 4px;
+  height: 52px;
+  background: white;
+  cursor: pointer;
+  border: none;
+}
+.brightness-sliderLivingRom::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 4px;
+  height: 52px;
+  background: white;
+  cursor: pointer;
+  border: none;
+}
+/* Widget Bed Light  */
+.title {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.content-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+.light-icon {
+
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  padding: 15px;
+  border-radius: 50%;
+}
+
+.light-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.light-icon.active {
+  color: #ffd700;
+  animation: glow 1.5s ease-in-out infinite alternate;
+}
+
+.status {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 17px;
+  font-style: bold;
+  transition: all 0.3s ease;
+  position: flex;
+}
+
+/* Animation for light glow effect */
+@keyframes glow {
+  from {
+    box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #ffd700, 0 0 20px #ffd700;
+  }
+  to {
+    box-shadow: 0 0 10px #fff, 0 0 15px #ffd700, 0 0 20px #ffd700,
+      0 0 30px #ffd700;
+  }
+}
