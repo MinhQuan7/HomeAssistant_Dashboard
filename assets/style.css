@@ -114,7 +114,12 @@ body {
 
 /* Enhanced widgets */
 .widget {
-  background: var(--surface);
+  /* background: var(--surface); */
+  background: linear-gradient(
+    180deg,
+    rgba(22, 24, 32, 0.5) 0%,
+    rgba(32, 34, 42, 0.7) 100%
+  ) !important;
   border-radius: 16px;
   padding: 20px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -172,7 +177,11 @@ body {
 }
 
 /* Animated gauge variants */
+/* Vòng gauge cho humidifier */
 .gauge.humidifier {
+  width: 120px;
+  height: 120px;
+  margin: 10px auto;
   background: conic-gradient(
     from 0deg,
     #2196f3 0%,
@@ -180,9 +189,50 @@ body {
     transparent 68%
   );
   border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   animation: rotate 2s linear infinite;
 }
 
+.gauge.humidifier .value {
+  font-size: 24px;
+  color: #2196f3;
+}
+
+/* Khu vực controls phía dưới */
+.controls {
+  display: flex;
+}
+
+.controls button {
+  flex: 1; /* Mỗi nút chiếm 1 phần bằng nhau */
+  background: none;
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  outline: none;
+}
+
+.controls button.active {
+  background: #2196f3;
+  color: #fff;
+}
+
+.controls button:not(:last-child) {
+  border-right: 1px solid #ccc; /* Đường kẻ ngăn giữa 2 nút */
+}
+
+/* Animation ví dụ xoay vòng gauge */
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 .gauge.heatpump {
   background: conic-gradient(
     from 0deg,
@@ -440,7 +490,7 @@ body {
 
 /* Khi đèn bật, toàn bộ widget sẽ có background trắng mờ */
 .widget:has(.light-icon.active) {
-  background: rgb(112 105 105 / 0.1);
+  background: rgba(90, 86, 86, 0.1) !important;
   backdrop-filter: blur(5px);
   box-shadow: 0 0 35px rgba(255, 255, 255, 0.7);
 }
@@ -526,6 +576,20 @@ body {
   backdrop-filter: blur(10px);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
+.weather-widget {
+  background: linear-gradient(
+    180deg,
+    rgba(22, 24, 32, 0.7) 0%,
+    rgba(32, 34, 42, 0.8) 100%
+  );
+  border-radius: 20px;
+  padding: 16px;
+  color: white;
+  width: 100%;
+  max-width: 300px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
 
 .weather-header {
   display: flex;
@@ -562,10 +626,13 @@ body {
 .canvas-container {
   width: 120px;
   height: 120px;
-  position: relative !important;
+  position: relative;
   margin: 0 auto;
   cursor: move;
   border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .forecast {
