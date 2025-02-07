@@ -71,7 +71,15 @@ function updateRandomGauge() {
   // Gọi hàm cập nhật gauge với giá trị ngẫu nhiên
   updateGauge(randomValue);
 }
-
+//==========Active Button - Humidifier============
+const activeButton = document.querySelector(
+  ".humidifier-widget .controls .active"
+);
+activeButton.addEventListener("click", function () {
+  clearInterval(intervalId);
+  updateRandomGauge(); // Cập nhật gauge ngay lập tức
+  intervalId = setInterval(updateRandomGauge, 1000);
+});
 
 //==========Power Off - Pump Widget=========
 let intervalId2 = setInterval(updateRandomPumpGauge, 1000);
@@ -101,3 +109,12 @@ function updateRandomPumpGauge() {
   // Gọi hàm cập nhật gauge với giá trị ngẫu nhiên
   updatePumpGauge(randomValue);
 }
+//==========Active Button - Pump============
+const activeButtonPump = document.querySelector(
+  ".pump-widget .controls .active"
+);
+activeButtonPump.addEventListener("click", function () {
+  clearInterval(intervalId);
+  updateRandomPumpGauge(); // Cập nhật gauge ngay lập tức
+  intervalId = setInterval(updateRandomPumpGauge, 1000);
+});
