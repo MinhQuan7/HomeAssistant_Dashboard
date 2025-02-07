@@ -200,10 +200,51 @@
               </button>
             </div>
           </div>
-          <div class="widget">
-            <div class="title">Next cleaning</div>
-            <div class="subtitle">In 16 hours</div>
+          <div class="widget cleaning-widget">
+            <div class="title">Robot Reboot</div>
+            <div class="countdown-container">
+              <span>Next Cleaning In</span>
+              <div class="countdown-title">
+                <i class="fas fa-clock"></i>
+              </div>  
+              <div class="countdown-wrapper">
+                <div class="countdown-item">
+                  <div class="countdown-number" id="hours">00</div>
+                  <div class="countdown-label">Hours</div>
+                </div>
+                <div class="countdown-separator">:</div>
+                <div class="countdown-item">
+                  <div class="countdown-number" id="minutes">00</div>
+                  <div class="countdown-label">Minutes</div>
+                </div>
+                <div class="countdown-separator">:</div>
+                <div class="countdown-item">
+                  <div class="countdown-number" id="seconds">00</div>
+                  <div class="countdown-label">Seconds</div>
+                </div>
+              </div>
+            </div>
+            <div class="button-container">
+              <button class="effect-button" onclick="showModal('relax')">
+                Return
+              </button>
+              <button class="effect-button" onclick="showModal('cleaning')">
+                Cleaning
+              </button>
+              <button class="effect-button" onclick="showModal('laundry')">
+                Laundry
+              </button>
+            </div>
+            <!-- Modal -->
+            <div class="modal" id="serviceModal">
+              <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2 id="modalTitle"></h2>
+                <p id="modalContent"></p>
+              </div>
+            </div>
           </div>
+
           <div class="widget">
             <div class="title">Pergola Roof</div>
             <div class="gauge pergola">

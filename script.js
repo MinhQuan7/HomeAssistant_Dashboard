@@ -118,3 +118,80 @@ activeButtonPump.addEventListener("click", function () {
   updateRandomPumpGauge(); // Cập nhật gauge ngay lập tức
   intervalId = setInterval(updateRandomPumpGauge, 1000);
 });
+
+//======Cleaning Widget=======
+function updateCountdown() {
+  const now = new Date();
+  const target = new Date();
+  target.setHours(target.getHours() + 16);
+
+  const diff = target - now;
+
+  const hours = Math.floor(diff / (1000 * 60 * 60));
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+  // Update hours
+  const hoursElement = document.getElementById("hours");
+  if (hoursElement.textContent !== hours.toString().padStart(2, "0")) {
+    hoursElement.classList.add("flip");
+    setTimeout(() => hoursElement.classList.remove("flip"), 600);
+  }
+  hoursElement.textContent = hours.toString().padStart(2, "0");
+
+  // Update minutes
+  const minutesElement = document.getElementById("minutes");
+  if (minutesElement.textContent !== minutes.toString().padStart(2, "0")) {
+    minutesElement.classList.add("flip");
+    setTimeout(() => minutesElement.classList.remove("flip"), 600);
+  }
+  minutesElement.textContent = minutes.toString().padStart(2, "0");
+
+  // Update seconds
+  const secondsElement = document.getElementById("seconds");
+  if (secondsElement.textContent !== seconds.toString().padStart(2, "0")) {
+    secondsElement.classList.add("flip");
+    setTimeout(() => secondsElement.classList.remove("flip"), 600);
+  }
+  secondsElement.textContent = seconds.toString().padStart(2, "0");
+}
+
+// Update countdown every second
+setInterval(updateCountdown, 1000);
+updateCountdown(); // Initial call
+
+// Modal functionality (giữ nguyên như cũ)
+const modal = document.getElementById("serviceModal");
+const modalTitle = document.getElementById("modalTitle");
+const modalContent = document.getElementById("modalContent");
+
+function showModal(service) {
+  const contents = {
+    relax: {
+      title: "Relax Time",
+      content: "Take a moment to relax and recharge.",
+    },
+    cleaning: {
+      title: "Cleaning Service",
+      content: "Professional cleaning service at your convenience.",
+    },
+    laundry: {
+      title: "Laundry Service",
+      content: "Expert laundry service for your clothes and linens.",
+    },
+  };
+
+  modalTitle.textContent = contents[service].title;
+  modalContent.textContent = contents[service].content;
+  modal.style.display = "block";
+}
+
+document.querySelector(".close").onclick = function () {
+  modal.style.display = "none";
+};
+
+window.onclick = function (event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+};

@@ -28,6 +28,7 @@ body {
   backdrop-filter: blur(1px);
   -webkit-backdrop-filter: blur(10px);
   /* background-image: url(imgs/violet-pink-back.jpg); */
+  position: relative;
 }
 
 .container > * {
@@ -799,4 +800,263 @@ body {
 .forecast {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/*========Cleaning Widget===========*/
+.countdown-container {
+  text-align: center;
+  padding: 20px;
+  background: linear-gradient(145deg, #c5c5c500, #ffffff0a);
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.countdown-title {
+  font-size: 1.2rem;
+  color: #374151;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.countdown-title i {
+  color: #ffffff;
+  animation: pulse 2s infinite;
+}
+
+.countdown-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.countdown-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 60px;
+}
+
+.countdown-number {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #3b82f6;
+  background: #ffffff;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  min-width: 70px;
+  position: relative;
+  overflow: hidden;
+}
+
+.countdown-number::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+  animation: slideLine 2s linear infinite;
+}
+
+.countdown-label {
+  font-size: 0.8rem;
+  color: #ffffff;
+  margin-top: 5px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.countdown-separator {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #3b82f6;
+  animation: blink 1s infinite;
+}
+
+/* Button enhancements */
+.effect-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.8rem;
+  padding: 12px 34px;
+  background: linear-gradient(145deg, #4caf50, #45a049);
+}
+
+.effect-button i {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+.effect-button:hover i {
+  transform: scale(1.2);
+}
+
+/* Animations */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes slideLine {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes countdownFlip {
+  0% {
+    transform: rotateX(0deg);
+  }
+  100% {
+    transform: rotateX(360deg);
+  }
+}
+
+.countdown-number.flip {
+  animation: countdownFlip 0.6s ease-in-out;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-around;
+  padding: 15px;
+}
+
+.effect-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  background: var(--primary);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.effect-button:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transition: all 0.5s;
+}
+
+.effect-button:hover:before {
+  left: 100%;
+}
+
+.effect-button:active {
+  transform: scale(0.95);
+}
+
+/* Modal styles */
+/* CSS cho container */
+.container {
+  position: relative; /* Để modal có thể định vị tương đối với container */
+}
+
+/* Modal styles */
+.modal {
+  display: none;
+  position: absolute; /* Thay đổi từ fixed thành absolute */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.modal-content {
+  position: absolute;
+  background-color: linear-gradient(145deg, #e8e3e3ef, #eadfdf0a);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  border-radius: 5px;
+  width: 80%;
+  max-width: 500px;
+  animation: modalFadeIn 0.3s;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.close {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: #777;
+}
+
+/* Thêm media queries để đảm bảo modal responsive */
+@media screen and (max-width: 768px) {
+  .modal-content {
+    width: 90%;
+    margin: 0 auto;
+  }
+}
+
+.close {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: #777;
 }
