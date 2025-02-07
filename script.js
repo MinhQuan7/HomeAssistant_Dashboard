@@ -1,4 +1,3 @@
-
 const slider = document.querySelector(".brightness-slider");
 const sliderFill = document.querySelector(".slider-fill");
 const valueDisplay = document.querySelector(".widget-value");
@@ -34,3 +33,45 @@ widget.addEventListener("click", () => {
     status.textContent = "Off";
   }
 });
+
+//============= Hàm cập nhật gauge với giá trị mới
+function updateGauge(newVal) {
+  // Lấy phần tử gauge có class ".gauge.humidifier.neon"
+  const gauge = document.querySelector(".gauge.humidifier.neon");
+  // Cập nhật biến CSS --value của gauge
+  gauge.style.setProperty("--value", newVal);
+  // Cập nhật text hiển thị bên trong phần tử con có class ".value"
+  gauge.querySelector(".value").textContent = newVal + "%";
+}
+
+// Hàm cập nhật gauge với giá trị ngẫu nhiên
+function updateRandomGauge() {
+  // Sinh số ngẫu nhiên từ 0 đến 100
+  const randomValue = Math.floor(Math.random() * 101);
+  // Gọi hàm cập nhật gauge với giá trị ngẫu nhiên
+  updateGauge(randomValue);
+}
+
+// Sử dụng setInterval để gọi hàm updateRandomGauge mỗi 1 giây
+setInterval(updateRandomGauge, 1000);
+
+//==========Pump
+function updatePumpGauge(newVal) {
+  // Lấy phần tử gauge có class ".gauge.pump.neon"
+  const gauge = document.querySelector(".gauge.pump.neon");
+  // Cập nhật biến CSS --value của gauge
+  gauge.style.setProperty("--value", newVal);
+  // Cập nhật text hiển thị bên trong phần tử con có class ".value"
+  gauge.querySelector(".value").textContent = newVal + "%";
+}
+
+// Hàm cập nhật gauge với giá trị ngẫu nhiên
+function updateRandomPumpGauge() {
+  // Sinh số ngẫu nhiên từ 0 đến 100
+  const randomValue = Math.floor(Math.random() * 101);
+  // Gọi hàm cập nhật gauge với giá trị ngẫu nhiên
+  updatePumpGauge(randomValue);
+}
+
+// Sử dụng setInterval để gọi hàm updateRandomGauge mỗi 1 giây
+setInterval(updateRandomPumpGauge, 1000);
