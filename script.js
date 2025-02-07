@@ -336,39 +336,64 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 //============Air Conditioner Widget==============
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
+  const temperatureValue = document.querySelector(".temperature-value");
+  const gaugeFill = document.querySelector(".gauge-fill");
+  const gaugeDot = document.querySelector(".gauge-dot");
+  const decreaseButton = document.querySelector(".temp-button.decrease");
+  const increaseButton = document.querySelector(".temp-button.increase");
+  const airwaveButton = document.querySelector(".action-button:last-child");
+
   let temperature = 76;
-  const gauge = document.querySelector(".temperature-gauge");
-  const tempValue = document.querySelector(".temperature-value");
-  const minTemp = 60;
-  const maxTemp = 90;
+  let isRandom = false;
+  let randomInterval;
 
-  function updateTemperature(temp) {
-    temperature = Math.min(Math.max(temp, minTemp), maxTemp);
-    const percentage = ((temperature - minTemp) / (maxTemp - minTemp)) * 100;
-    gauge.style.setProperty("--percentage", `${percentage}%`);
-    tempValue.innerHTML = `${temperature}<span class="temperature-unit">°F</span>`;
-  }
+  // Calculate gauge percentage based on temperature
+  const calculateGaugePercentage = (temp) => {
+    const minTemp = 60;
+    const maxTemp = 90;
+    return ((temp - minTemp) / (maxTemp - minTemp)) * 100;
+  };
 
-  document.querySelectorAll(".temp-button").forEach((button, index) => {
-    button.addEventListener("click", () => {
-      if (index === 0) {
-        updateTemperature(temperature - 1);
-      } else {
-        updateTemperature(temperature + 1);
-      }
-    });
+  const updateDisplay = (temp) => {
+    const gaugeValue = calculateGaugePercentage(temp);
+
+    temperatureValue.textContent = temp;
+    gaugeFill.style.setProperty("--gauge-value", `${gaugeValue}%`);
+    document
+      .querySelector(".gauge-dot-container")
+      .style.setProperty("--gauge-value", gaugeValue);
+  };
+
+  // Temperature adjustment function
+  const adjustTemperature = (increment) => {
+    const newTemp = temperature + increment;
+    if (newTemp >= 60 && newTemp <= 90) {
+      temperature = newTemp;
+      updateDisplay(temperature);
+    }
+  };
+
+  // Event listeners for temperature buttons
+  decreaseButton.addEventListener("click", () => adjustTemperature(-1));
+  increaseButton.addEventListener("click", () => adjustTemperature(1));
+
+  // Random temperature mode
+  airwaveButton.addEventListener("click", () => {
+    isRandom = !isRandom;
+
+    if (isRandom) {
+      airwaveButton.classList.add("active");
+      randomInterval = setInterval(() => {
+        const change = Math.random() > 0.5 ? 1 : -1;
+        adjustTemperature(change);
+      }, 2000);
+    } else {
+      airwaveButton.classList.remove("active");
+      clearInterval(randomInterval);
+    }
   });
 
-  document.querySelectorAll(".action-button").forEach((button) => {
-    button.addEventListener("click", () => {
-      document.querySelectorAll(".action-button").forEach((btn) => {
-        btn.classList.remove("active");
-      });
-      button.classList.add("active");
-    });
-  });
-
-  // Initialize temperature gauge
-  updateTemperature(temperature);
+  // Initial display update
+  updateDisplay(temperature);
 });
