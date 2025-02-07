@@ -176,7 +176,7 @@ body {
   font-weight: 500;
 }
 
-/* Animated gauge variants */
+/* Properties of humidifier gauge */
 .gauge.humidifier.neon {
   --size: 150px; /* Đường kính gauge */
   --thickness: 15px; /* Độ dày vòng gauge */

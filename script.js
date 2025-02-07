@@ -34,10 +34,30 @@ widget.addEventListener("click", () => {
   }
 });
 
+//=============Power Off Button - humidifier widget
+let intervalId = setInterval(updateRandomGauge, 1000);
+// Lấy nút power-off (nút thứ 2 trong .controls)
+const powerOffButton = document.querySelector(
+  ".humidifier-widget .controls button:last-child"
+);
+// Xử lý sự kiện click cho nút power-off
+powerOffButton.addEventListener("click", function () {
+  // Dừng cập nhật random
+  clearInterval(intervalId);
+  // Lấy phần tử gauge
+  const gauge = document.querySelector(".gauge.humidifier.neon");
+  // Cập nhật CSS biến --value (ở đây có thể đặt 0)
+  gauge.style.setProperty("--value", 0);
+  // Hiển thị chữ "Off" thay vì số phần trăm
+  gauge.querySelector(".value").textContent = "OFF";
+});
+
 //============= Hàm cập nhật gauge với giá trị mới
 function updateGauge(newVal) {
   // Lấy phần tử gauge có class ".gauge.humidifier.neon"
-  const gauge = document.querySelector(".gauge.humidifier.neon");
+  const gauge = document.querySelector(
+    ".humidifier-widget .gauge.humidifier.neon"
+  );
   // Cập nhật biến CSS --value của gauge
   gauge.style.setProperty("--value", newVal);
   // Cập nhật text hiển thị bên trong phần tử con có class ".value"
@@ -52,13 +72,22 @@ function updateRandomGauge() {
   updateGauge(randomValue);
 }
 
-// Sử dụng setInterval để gọi hàm updateRandomGauge mỗi 1 giây
-setInterval(updateRandomGauge, 1000);
 
-//==========Pump
+//==========Power Off - Pump Widget=========
+let intervalId2 = setInterval(updateRandomPumpGauge, 1000);
+const powerOffButton2 = document.querySelector(
+  ".pump-widget .controls button:last-child"
+);
+powerOffButton2.addEventListener("click", function () {
+  clearInterval(intervalId2);
+  const gaugePump = document.querySelector(".pump-widget .gauge.pump.neon");
+  gaugePump.style.setProperty("--value", 0);
+  gaugePump.querySelector(".value").textContent = "OFF";
+});
+
 function updatePumpGauge(newVal) {
   // Lấy phần tử gauge có class ".gauge.pump.neon"
-  const gauge = document.querySelector(".gauge.pump.neon");
+  const gauge = document.querySelector(".pump-widget .gauge.pump.neon");
   // Cập nhật biến CSS --value của gauge
   gauge.style.setProperty("--value", newVal);
   // Cập nhật text hiển thị bên trong phần tử con có class ".value"
@@ -72,6 +101,3 @@ function updateRandomPumpGauge() {
   // Gọi hàm cập nhật gauge với giá trị ngẫu nhiên
   updatePumpGauge(randomValue);
 }
-
-// Sử dụng setInterval để gọi hàm updateRandomGauge mỗi 1 giây
-setInterval(updateRandomPumpGauge, 1000);
