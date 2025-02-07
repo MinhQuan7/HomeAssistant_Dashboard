@@ -195,3 +195,57 @@ window.onclick = function (event) {
     modal.style.display = "none";
   }
 };
+
+//==============Music Widget============
+const audioPlayer = document.getElementById("audioPlayer");
+const playButton = document.querySelector(".playButton-musicWidget");
+const stopButton = document.querySelector(".stopButton-musicWidget");
+const progressBar = document.querySelector(".progress-musicWidget");
+const durationDisplay = document.querySelector(".duration-musicWidget");
+const albumArt = document.querySelector(".albumArt-musicWidget");
+const vinylRecord = document.querySelector(".vinylRecord-musicWidget");
+playButton.addEventListener("click", () => {
+  if (audioPlayer.paused) {
+    audioPlayer.play();
+    playButton.innerHTML = '<i class="fas fa-pause"></i>';
+    albumArt.classList.add("playing");
+    vinylRecord.classList.add("rotate");
+  } else {
+    audioPlayer.pause();
+    playButton.innerHTML = '<i class="fas fa-play"></i>';
+    albumArt.classList.remove("playing");
+    vinylRecord.classList.remove("rotate");
+  }
+});
+
+// Stop functionality
+stopButton.addEventListener("click", () => {
+  audioPlayer.pause();
+  audioPlayer.currentTime = 0;
+  playButton.innerHTML = '<i class="fas fa-play"></i>';
+  progressBar.style.width = "0%";
+  albumArt.classList.remove("playing");
+  vinylRecord.classList.remove("rotate");
+  updateDurationDisplay();
+});
+
+// Update progress bar and duration
+audioPlayer.addEventListener("timeupdate", () => {
+  const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+  progressBar.style.width = `${progress}%`;
+  updateDurationDisplay();
+});
+
+// Helper function to format time (MM:SS)
+function formatTime(time) {
+  const minutes = Math.floor(time / 60);
+  const seconds = Math.floor(time % 60);
+  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+}
+
+// Update duration display
+function updateDurationDisplay() {
+  const currentTime = formatTime(audioPlayer.currentTime);
+  const duration = formatTime(audioPlayer.duration);
+  durationDisplay.textContent = `${currentTime} / ${duration}`;
+}

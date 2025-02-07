@@ -185,20 +185,52 @@
               </button>
             </div>
           </div>
-          <div class="widget">
-            <div class="title">Artu</div>
-            <div class="subtitle">Docked</div>
-            <div class="controls">
-              <button>
-                <i class="fas fa-play"> </i>
+          <div class="widget music-widget">
+            <div class="title-musicWidget">Music Player</div>
+            <div class="subtitle-musicWidget">Docked</div>
+            <div class="player-musicWidget">
+              <div class="albumArt-musicWidget">
+                <img
+                  src="assets/imgs/beeriu.jfif"
+                  alt="Album Art"
+                  class="albumCover-musicWidget"
+                />
+                <div class="vinylRecord-musicWidget">
+                  <div class="vinylRing-musicWidget"></div>
+                  <img
+                    src="assets/imgs/beeriu.jfif"
+                    alt="Vinyl Art"
+                    class="vinylArt-musicWidget"
+                  />
+                </div>
+              </div>
+              <div class="songInfo-musicWidget">
+                <span class="songTitle-musicWidget">Thiên Lý Ơi</span>
+                <span class="artistName-musicWidget">Jack J97</span>
+              </div>
+              <div class="progressBar-musicWidget">
+                <div class="progress-musicWidget"></div>
+              </div>
+              <div class="duration-musicWidget">0:00 / 4:33</div>
+            </div>
+            <div class="controls-musicWidget">
+              <button class="previousButton-musicWidget">
+                <i class="fas fa-backward"></i>
               </button>
-              <button>
-                <i class="fas fa-stop"> </i>
+              <button class="playButton-musicWidget">
+                <i class="fas fa-play"></i>
               </button>
-              <button>
-                <i class="fas fa-cog"> </i>
+              <button class="stopButton-musicWidget">
+                <i class="fas fa-stop"></i>
+              </button>
+              <button class="nextButton-musicWidget">
+                <i class="fas fa-forward"></i>
+              </button>
+              <button class="settingsButton-musicWidget">
+                <i class="fas fa-cog"></i>
               </button>
             </div>
+            <audio id="audioPlayer" src="assets/audio/thienlyoi.mp3"></audio>
           </div>
           <div class="widget cleaning-widget">
             <div class="title">Robot Reboot</div>
@@ -206,7 +238,7 @@
               <span>Next Cleaning In</span>
               <div class="countdown-title">
                 <i class="fas fa-clock"></i>
-              </div>  
+              </div>
               <div class="countdown-wrapper">
                 <div class="countdown-item">
                   <div class="countdown-number" id="hours">00</div>
