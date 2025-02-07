@@ -204,6 +204,11 @@ const progressBar = document.querySelector(".progress-musicWidget");
 const durationDisplay = document.querySelector(".duration-musicWidget");
 const albumArt = document.querySelector(".albumArt-musicWidget");
 const vinylRecord = document.querySelector(".vinylRecord-musicWidget");
+const previousButton = document.querySelector(".previousButton-musicWidget");
+const nextButton = document.querySelector(".nextButton-musicWidget");
+const songTitleElement = document.querySelector(".songTitle-musicWidget");
+const artistNameElement = document.querySelector(".artistName-musicWidget");
+
 playButton.addEventListener("click", () => {
   if (audioPlayer.paused) {
     audioPlayer.play();
@@ -235,6 +240,36 @@ audioPlayer.addEventListener("timeupdate", () => {
   progressBar.style.width = `${progress}%`;
   updateDurationDisplay();
 });
+// Previous button functionality
+previousButton.addEventListener("click", () => {
+  let newIndex = currentSongIndex - 1;
+  if (newIndex < 0) {
+    newIndex = songs.length - 1; // Loop back to the last song
+  }
+  loadSong(newIndex);
+});
+
+// Next button functionality
+nextButton.addEventListener("click", () => {
+  let newIndex = currentSongIndex + 1;
+  if (newIndex >= songs.length) {
+    newIndex = 0; // Loop back to the first song
+  }
+  loadSong(newIndex);
+});
+
+// Add this to auto-play next song when current song ends
+audioPlayer.addEventListener("ended", () => {
+  let newIndex = currentSongIndex + 1;
+  if (newIndex >= songs.length) {
+    newIndex = 0;
+  }
+  loadSong(newIndex);
+  audioPlayer.play();
+  playButton.innerHTML = '<i class="fas fa-pause"></i>';
+  albumArt.classList.add("playing");
+  vinylRecord.classList.add("rotate");
+});
 
 // Helper function to format time (MM:SS)
 function formatTime(time) {
@@ -249,3 +284,53 @@ function updateDurationDisplay() {
   const duration = formatTime(audioPlayer.duration);
   durationDisplay.textContent = `${currentTime} / ${duration}`;
 }
+
+// Update the songs array to include title and artist information
+// Add this at the beginning of your JS file
+const songs = [
+  {
+    src: "assets/audio/1000_anhmat.mp3",
+    title: "1000 Ánh Mắt",
+    artist: "Shiki",
+  },
+  {
+    src: "assets/audio/reeves.mp3",
+    title: "Reeves",
+    artist: "HIEUTHUHAI-Manbo",
+  },
+  {
+    src: "assets/audio/thienlyoi.mp3",
+    title: "Thiên Lý Ơi",
+    artist: "Jack J97",
+  },
+];
+
+let currentSongIndex = 0;
+
+// Function to load and play a song
+function loadSong(index) {
+  if (index >= 0 && index < songs.length) {
+    currentSongIndex = index;
+    audioPlayer.src = songs[currentSongIndex].src;
+
+    // Update song info
+    songTitleElement.textContent = songs[currentSongIndex].title;
+    artistNameElement.textContent = songs[currentSongIndex].artist;
+
+    // Reset UI elements
+    progressBar.style.width = "0%";
+    playButton.innerHTML = '<i class="fas fa-play"></i>';
+    albumArt.classList.remove("playing");
+    vinylRecord.classList.remove("rotate");
+
+    // If you want to auto-play when switching songs, uncomment these lines:
+    // audioPlayer.play();
+    // playButton.innerHTML = '<i class="fas fa-pause"></i>';
+    // albumArt.classList.add("playing");
+    // vinylRecord.classList.add("rotate");
+    // updateDurationDisplay();
+  }
+}
+document.addEventListener("DOMContentLoaded", () => {
+  loadSong(0);
+});
