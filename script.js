@@ -334,3 +334,41 @@ function loadSong(index) {
 document.addEventListener("DOMContentLoaded", () => {
   loadSong(0);
 });
+
+//============Air Conditioner Widget==============
+document.addEventListener("DOMContentLoaded", function () {
+  let temperature = 76;
+  const gauge = document.querySelector(".temperature-gauge");
+  const tempValue = document.querySelector(".temperature-value");
+  const minTemp = 60;
+  const maxTemp = 90;
+
+  function updateTemperature(temp) {
+    temperature = Math.min(Math.max(temp, minTemp), maxTemp);
+    const percentage = ((temperature - minTemp) / (maxTemp - minTemp)) * 100;
+    gauge.style.setProperty("--percentage", `${percentage}%`);
+    tempValue.innerHTML = `${temperature}<span class="temperature-unit">°F</span>`;
+  }
+
+  document.querySelectorAll(".temp-button").forEach((button, index) => {
+    button.addEventListener("click", () => {
+      if (index === 0) {
+        updateTemperature(temperature - 1);
+      } else {
+        updateTemperature(temperature + 1);
+      }
+    });
+  });
+
+  document.querySelectorAll(".action-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      document.querySelectorAll(".action-button").forEach((btn) => {
+        btn.classList.remove("active");
+      });
+      button.classList.add("active");
+    });
+  });
+
+  // Initialize temperature gauge
+  updateTemperature(temperature);
+});
