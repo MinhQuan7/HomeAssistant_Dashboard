@@ -1215,9 +1215,10 @@ body {
   padding: 24px;
   color: white;
   font-family: "Arial", sans-serif;
-  width: 100%;
+  width: 92%;
   grid-column: span 2;
 }
+
 .header {
   display: flex;
   align-items: center;
@@ -1269,7 +1270,6 @@ body {
   border-radius: 50%;
   border: 8px solid rgb(31, 41, 55);
 }
-/* ... (các CSS khác giữ nguyên) ... */
 
 .gauge-fill {
   position: absolute;
@@ -1282,21 +1282,27 @@ body {
   );
   box-shadow: 0 0 10px rgba(190, 255, 0, 0.3), 0 0 20px rgba(190, 255, 0, 0.2);
   transition: all 0.3s ease;
+  transform: rotate(calc(var(--rotation, 0) * 1deg));
+  transform-origin: center;
+  transition: transform 0.3s ease;
 }
 
 .gauge-dot {
   position: absolute;
-  width: 24px; /* Tăng kích thước của dot */
+  width: 24px;
   height: 24px;
-  border-radius: 50%;
   background: rgb(190, 255, 0);
+  border-radius: 50%;
+  top: 50%;
   left: 50%;
-  top: 0;
-  transform-origin: 50% 50%;
+  margin: -12px;
+  transform-origin: center;
+  /* transform: rotate(calc(var(--rotation, 0) * 1deg)) translateX(140px); */
+  transform: rotate(calc(var(--rotation, 0) * 1deg)) translateX(116px);
+  transition: transform 0.3s ease;
   box-shadow: 0 0 10px rgb(190, 255, 0), 0 0 20px rgb(190, 255, 0),
     0 0 30px rgb(190, 255, 0);
-  transition: transform 0.3s ease;
-  z-index: 2; /* Đảm bảo dot luôn hiển thị trên cùng */
+  z-index: 2;
 }
 
 /* Thêm overlay cho hiệu ứng phát sáng tốt hơn */
@@ -1310,7 +1316,22 @@ body {
   filter: blur(8px);
   animation: pulse 2s infinite;
 }
+.gauge-ticks {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 8px solid rgb(31, 41, 55);
+}
 
+/* Tạo gauge track */
+.gauge-track {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgb(31, 41, 55);
+  mask: radial-gradient(transparent 62%, black 65%);
+  -webkit-mask: radial-gradient(transparent 62%, black 65%);
+}
 @keyframes pulse {
   0% {
     transform: scale(1);
@@ -1329,7 +1350,7 @@ body {
 /* Điều chỉnh vùng trong của gauge */
 .temperature-wrapper {
   position: absolute;
-  inset: 2.5rem; /* Tăng khoảng cách để phù hợp với dot lớn hơn */
+  inset: 2.5rem;
   background: rgb(17, 24, 39);
   border-radius: 50%;
   display: flex;

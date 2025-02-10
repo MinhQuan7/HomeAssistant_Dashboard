@@ -354,17 +354,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const maxTemp = 90;
     return ((temp - minTemp) / (maxTemp - minTemp)) * 100;
   };
-
   const updateDisplay = (temp) => {
-    const gaugeValue = calculateGaugePercentage(temp);
+    const minTemp = 60;
+    const maxTemp = 90;
+    const percentage = (temp - minTemp) / (maxTemp - minTemp);
+    const rotation = percentage * 360; // Convert to degrees
 
     temperatureValue.textContent = temp;
-    gaugeFill.style.setProperty("--gauge-value", `${gaugeValue}%`);
     document
-      .querySelector(".gauge-dot-container")
-      .style.setProperty("--gauge-value", gaugeValue);
+      .querySelector(".gauge-fill")
+      .style.setProperty("--rotation", rotation);
+    document
+      .querySelector(".gauge-dot")
+      .style.setProperty("--rotation", rotation);
   };
-
   // Temperature adjustment function
   const adjustTemperature = (increment) => {
     const newTemp = temperature + increment;
