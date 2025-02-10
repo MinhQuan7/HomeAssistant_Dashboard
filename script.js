@@ -354,16 +354,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const maxTemp = 30;
     return ((temp - minTemp) / (maxTemp - minTemp)) * 100;
   };
-  // const updateDisplay = (temp) => {
-  //   const minTemp = 14;
-  //   const maxTemp = 30;
-  //   const percentage = (temp - minTemp) / (maxTemp - minTemp);
-  //   const rotation = percentage * 360; // Góc xoay tính bằng độ
 
-  //   temperatureValue.textContent = temp;
-  //   gaugeFill.style.setProperty("--fill-percentage", `${rotation}deg`);
-  //   gaugeFill.style.setProperty("--rotation", `${rotation}deg`);
-  // };
   const updateDisplay = (temp) => {
     const minTemp = 14;
     const maxTemp = 30;
