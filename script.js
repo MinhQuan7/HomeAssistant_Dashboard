@@ -344,34 +344,40 @@ document.addEventListener("DOMContentLoaded", () => {
   const increaseButton = document.querySelector(".temp-button.increase");
   const airwaveButton = document.querySelector(".action-button:last-child");
 
-  let temperature = 76;
+  let temperature = 15;
   let isRandom = false;
   let randomInterval;
 
   // Calculate gauge percentage based on temperature
   const calculateGaugePercentage = (temp) => {
-    const minTemp = 60;
-    const maxTemp = 90;
+    const minTemp = 14;
+    const maxTemp = 30;
     return ((temp - minTemp) / (maxTemp - minTemp)) * 100;
   };
-  const updateDisplay = (temp) => {
-    const minTemp = 60;
-    const maxTemp = 90;
-    const percentage = (temp - minTemp) / (maxTemp - minTemp);
-    const rotation = percentage * 360; // Convert to degrees
+  // const updateDisplay = (temp) => {
+  //   const minTemp = 14;
+  //   const maxTemp = 30;
+  //   const percentage = (temp - minTemp) / (maxTemp - minTemp);
+  //   const rotation = percentage * 360; // Góc xoay tính bằng độ
 
+  //   temperatureValue.textContent = temp;
+  //   gaugeFill.style.setProperty("--fill-percentage", `${rotation}deg`);
+  //   gaugeFill.style.setProperty("--rotation", `${rotation}deg`);
+  // };
+  const updateDisplay = (temp) => {
+    const minTemp = 14;
+    const maxTemp = 30;
+    const percentage = (temp - minTemp) / (maxTemp - minTemp);
+    const rotation = percentage * 360;
     temperatureValue.textContent = temp;
-    document
-      .querySelector(".gauge-fill")
-      .style.setProperty("--rotation", rotation);
-    document
-      .querySelector(".gauge-dot")
-      .style.setProperty("--rotation", rotation);
+    // Cập nhật góc xoay cho gauge-fill và gauge-dot
+    gaugeFill.style.setProperty("--fill-percentage", `${rotation}deg`);
+    gaugeDot.style.setProperty("--rotation", `${rotation}deg`);
   };
   // Temperature adjustment function
   const adjustTemperature = (increment) => {
     const newTemp = temperature + increment;
-    if (newTemp >= 60 && newTemp <= 90) {
+    if (newTemp >= 14 && newTemp <= 30) {
       temperature = newTemp;
       updateDisplay(temperature);
     }
