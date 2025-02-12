@@ -34,71 +34,76 @@ widget.addEventListener("click", () => {
   }
 });
 
-//=============Power Off Button - humidifier widget
-let intervalId = setInterval(randomPumpHumid, 1000);
+let intervalId = setInterval(() => updateRandom("both"), 1000); // Khởi tạo với cả 2 giá trị
 
-// Lấy nút power-off (nút thứ 2 trong .controls)
-const powerOffButton = document.querySelector(
-  ".humidifier-widget .controls button:last-child"
-);
-powerOffButton.addEventListener("click", function () {
+// ============ Power Off Buttons ==============
+function handlePowerOff(type) {
   clearInterval(intervalId);
-  updateRandom("humidifier"); // Cập nhật gauge ngay lập tức
-  const gauge = document.querySelector(".gauge.humidifier.neon");
-  gauge.style.setProperty("--value", 0);
-  gauge.querySelector(".value").textContent = "OFF";
-});
-const powerOffButton2 = document.querySelector(
-  ".pump-widget .controls button:last-child"
-);
-powerOffButton2.addEventListener("click", function () {
-  clearInterval(intervalId);
-  updateRandom("humidifier"); // Cập nhật gauge ngay lập tức
-  const gaugePump = document.querySelector(".pump-widget .gauge.pump.neon");
-  gaugePump.style.setProperty("--value", 0);
-  gaugePump.querySelector(".value").textContent = "OFF";
-});
+  updateRandom(type);
 
-//============Active Button==============
-const activeButtonPump = document.querySelector(
-  ".pump-widget .controls .active"
-);
-const activeButtonHumidifier = document.querySelector(
-  ".humidifier-widget .controls .active"
-);
+  // Cập nhật gauge và chart về 0
+  if (type === "pump" || type === "both") {
+    const gaugePump = document.querySelector(".pump-widget .gauge.pump.neon");
+    gaugePump.style.setProperty("--value", 0);
+    gaugePump.querySelector(".value").textContent = "OFF";
+    updateChart(0, null); // Cập nhật chart về 0 cho pump
+  }
 
-activeButtonPump.addEventListener("click", function () {
-  clearInterval(intervalId);
-  updateRandom("pump"); // Cập nhật gauge ngay lập tức
-  intervalId = setInterval(() => updateRandom("pump"), 1000);
-});
-
-activeButtonHumidifier.addEventListener("click", function () {
-  clearInterval(intervalId);
-  updateRandom("humidifier"); // Cập nhật gauge ngay lập tức
-  intervalId = setInterval(() => updateRandom("humidifier"), 1000);
-});
-
-function updateRandom(type) {
-  if (type === "pump") {
-    const randomValue = Math.floor(Math.random() * 101);
-    updatePumpGauge(randomValue);
-    updateChart(randomValue, null); // Giả sử bạn muốn cập nhật chart với giá trị pump
-  } else if (type === "humidifier") {
-    const randomHumiValue = Math.floor(Math.random() * 101);
-    updateGauge(randomHumiValue);
-    updateChart(null, randomHumiValue); // Giả sử bạn muốn cập nhật chart với giá trị humidifier
+  if (type === "humidifier" || type === "both") {
+    const gaugeHumid = document.querySelector(
+      ".humidifier-widget .gauge.humidifier.neon"
+    );
+    gaugeHumid.style.setProperty("--value", 0);
+    gaugeHumid.querySelector(".value").textContent = "OFF";
+    updateChart(null, 0); // Cập nhật chart về 0 cho humidifier
   }
 }
 
-function randomPumpHumid() {
-  const randomValue = Math.floor(Math.random() * 101);
-  const randomHumiValue = Math.floor(Math.random() * 101);
-  updatePumpGauge(randomValue);
-  updateGauge(randomHumiValue);
-  updateChart(randomValue, randomHumiValue);
+// Gán sự kiện cho nút tắt
+document.querySelectorAll(".controls button:last-child").forEach((btn) => {
+  btn.addEventListener("click", function () {
+    const isPump = this.closest(".pump-widget");
+    handlePowerOff(isPump ? "pump" : "humidifier");
+  });
+});
+
+// ============ Active Buttons ==============
+function handleActive(type) {
+  clearInterval(intervalId);
+  updateRandom(type);
+  intervalId = setInterval(() => updateRandom(type), 1000);
 }
 
+document.querySelectorAll(".controls .active").forEach((btn) => {
+  btn.addEventListener("click", function () {
+    const isPump = this.closest(".pump-widget");
+    handleActive(isPump ? "pump" : "humidifier");
+  });
+});
+
+// ============ Core Functions ==============
+function updateRandom(type) {
+  const values = {
+    pump:
+      type === "both" || type === "pump"
+        ? Math.floor(Math.random() * 101)
+        : null,
+    humidifier:
+      type === "both" || type === "humidifier"
+        ? Math.floor(Math.random() * 101)
+        : null,
+  };
+
+  if (values.pump !== null) {
+    updatePumpGauge(values.pump);
+  }
+
+  if (values.humidifier !== null) {
+    updateGauge(values.humidifier);
+  }
+
+  updateChart(values.pump, values.humidifier);
+}
 function updatePumpGauge(newVal) {
   // Lấy phần tử gauge có class ".gauge.pump.neon"
   const gauge = document.querySelector(".pump-widget .gauge.pump.neon");
@@ -395,9 +400,11 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 //===========Realtime Chart===========
 let myChart; // Biến lưu trữ đối tượng chart
-const maxDataPoints = 20; // Số điểm dữ liệu tối đa hiển thị
 let chartData = []; // Mảng lưu trữ dữ liệu theo thời gian
-
+const maxDataPoints = 20;
+const maxLiveDataPoints = 60; // 60 điểm = 1 phút nếu cập nhật mỗi giây
+let allChartData = []; // Lưu toàn bộ dữ liệu
+let currentTimeRange = 0; // 0 = live
 // Hàm khởi tạo chart
 function initChart() {
   const ctx = document.getElementById("dataChart").getContext("2d");
@@ -457,13 +464,15 @@ function initChart() {
 
   // Đặt kích thước lớn hơn cho chart khi khởi động
   const chartContainer = document.getElementById("chartContainer");
-  chartContainer.style.width = "80%";
-  chartContainer.style.height = "400px";
+  // chartContainer.style.width = "80%";
+  // chartContainer.style.height = "400px";
 }
 
 // Hàm cập nhật dữ liệu chart
 function updateChart(humidifierVal, pumpVal) {
   const now = new Date();
+  const timestamp = now.getTime(); // Thêm timestamp
+
   const timeLabel = `${now.getHours().toString().padStart(2, "0")}:${now
     .getMinutes()
     .toString()
@@ -486,6 +495,28 @@ function updateChart(humidifierVal, pumpVal) {
   myChart.data.datasets[0].data = chartData.map((item) => item.humidifier);
   myChart.data.datasets[1].data = chartData.map((item) => item.pump);
   myChart.update();
+
+  // Thêm vào cả 2 mảng dữ liệu
+  const newData = {
+    time: `${now.getHours().toString().padStart(2, "0")}:${now
+      .getMinutes()
+      .toString()
+      .padStart(2, "0")}:${now.getSeconds().toString().padStart(2, "0")}`,
+    humidifier: humidifierVal,
+    pump: pumpVal,
+    timestamp: timestamp,
+  };
+
+  chartData.push(newData);
+  allChartData.push(newData);
+  // Xử lý hiển thị theo chế độ
+  // if (currentTimeRange === 0) {
+  //   if (allChartData.length > maxLiveDataPoints) {
+  //     allChartData.shift();
+  //   }
+  // }
+
+  // refreshChartDisplay();
 }
 
 // Hàm thu nhỏ chart dần dần
@@ -498,8 +529,8 @@ function resizeChart() {
     if (width > 30) {
       width -= 0.5;
       height -= 2.5;
-      chartContainer.style.width = `${width}%`;
-      chartContainer.style.height = `${height}px`;
+      // chartContainer.style.width = `${width}%`;
+      // chartContainer.style.height = `${height}px`;
     } else {
       clearInterval(resizeInterval);
     }
@@ -521,3 +552,83 @@ resizeChart();
 
 // Reset chart sau 30 phút
 setTimeout(resetChart, 30 * 60 * 1000);
+
+// ============ XỬ LÝ NÚT TIME RANGE ============
+document.querySelectorAll(".time-range").forEach((button) => {
+  button.addEventListener("click", function () {
+    // Xóa class active của tất cả các nút
+    document.querySelectorAll(".time-range").forEach((btn) => {
+      btn.classList.remove("active");
+    });
+
+    // Thêm class active cho nút được chọn
+    this.classList.add("active");
+
+    // Cập nhật time range
+    const minutes = parseInt(this.dataset.minutes);
+    currentTimeRange = minutes;
+    // showStatsModal(minutes);
+    // Nếu không phải chế độ live, dừng cập nhật realtime
+    if (minutes !== 0) {
+      clearInterval(intervalId);
+      showStatsModal(minutes);
+    } else {
+      // Nếu quay lại chế độ live, khởi động lại interval
+      intervalId = setInterval(() => updateRandom("both"), 1000);
+    }
+
+    refreshChartDisplay();
+  });
+});
+// Hàm làm mới hiển thị chart
+function refreshChartDisplay() {
+  let filteredData = [];
+
+  if (currentTimeRange === 0) {
+    filteredData = [...allChartData];
+  } else {
+    const cutoffTime = new Date();
+    cutoffTime.setMinutes(cutoffTime.getMinutes() - currentTimeRange);
+    filteredData = allChartData.filter((item) => item.timestamp > cutoffTime);
+  }
+
+  myChart.data.labels = filteredData.map((item) => item.timestamp);
+  myChart.data.datasets[0].data = filteredData.map((item) => item.humidifier);
+  myChart.data.datasets[1].data = filteredData.map((item) => item.pump);
+  myChart.update();
+}
+
+function showStatsModal(minutes) {
+  console.log("Acess to showStatsModal");
+  const modal = document.getElementById("statsModal");
+  const cutoffTime = new Date(Date.now() - minutes * 60 * 1000);
+
+  // Lọc dữ liệu
+  const filteredData = allChartData.filter(
+    (item) => new Date(item.timestamp) >= cutoffTime
+  );
+
+  // Tạo nội dung bảng
+  const tableBody = document.getElementById("statsTableBody");
+  tableBody.innerHTML = filteredData
+    .map(
+      (item) => `
+    <tr>
+      <td>${item.time}</td>
+      <td>${item.humidifier}</td>
+      <td>${item.pump}</td>
+    </tr>
+  `
+    )
+    .join("");
+
+  // Hiển thị modal
+  modal.style.display = "block";
+
+  // Xử lý đóng modal
+  document.querySelector(".close").onclick = () =>
+    (modal.style.display = "none");
+  window.onclick = (event) => {
+    if (event.target === modal) modal.style.display = "none";
+  };
+}
