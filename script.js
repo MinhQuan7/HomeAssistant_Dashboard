@@ -1,20 +1,23 @@
 const slider = document.querySelector(".brightness-slider");
 const sliderFill = document.querySelector(".slider-fill");
 const valueDisplay = document.querySelector(".widget-value");
-
+// eraWidget.triggerAction(actionOn.action, null);
 slider.addEventListener("input", function () {
   const value = this.value;
   sliderFill.style.width = value + "%";
   valueDisplay.textContent = value + "%";
+  eraWidget.triggerAction(onKitchenLight.action, null, { value: value });
 });
 
 const sliderLivingRoom = document.querySelector(".brightness-sliderLivingRom");
 const valueLivingRoom = document.querySelector(".widget-valueLivingRoom");
 const sliderFillLivingRoom = document.querySelector(".slider-fill-livingRoom");
+
 sliderLivingRoom.addEventListener("input", function () {
   const value = this.value;
   sliderFillLivingRoom.style.width = value + "%";
   valueLivingRoom.textContent = value + "%";
+  eraWidget.triggerAction(onLivingLight.action, null, { value: value });
 });
 
 // Widget Bed Light
@@ -28,9 +31,13 @@ widget.addEventListener("click", () => {
   if (isOn) {
     icon.classList.add("active");
     status.textContent = "On";
+    eraWidget.triggerAction(onBedLight.action, null);
+    eraWidget.triggerAction(onKitchenLight.action, null);
+    console.log("Console log action", onKitchenLight.action);
   } else {
     icon.classList.remove("active");
     status.textContent = "Off";
+    eraWidget.triggerAction(offBedLight.action, null);
   }
 });
 
@@ -606,12 +613,20 @@ let isHumidActive = true;
 let lastTempValue = null;
 let lastHumidValue = null;
 let configTemp = null,
-  configHumi = null;
+  configHumi = null,
+  onBedLight = null,
+  offBedLight = null,
+  onKitchenLight = null,
+  onLivingLight = null;
 
 eraWidget.init({
   onConfiguration: (configuration) => {
     configTemp = configuration.realtime_configs[0];
     configHumi = configuration.realtime_configs[1];
+    onBedLight = configuration.actions[0];
+    offBedLight = configuration.actions[1];
+    onKitchenLight = configuration.actions[2];
+    onLivingLight = configuration.actions[3];
   },
   onValues: (values) => {
     if (configTemp && values[configTemp.id]) {

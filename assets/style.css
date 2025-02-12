@@ -247,7 +247,7 @@ body {
   /* Ánh sáng bên trong */
   box-shadow: inset 0 0 15px var(--neon-color);
 }
-.widget.cleaning-widget,
+.widget.humidifier-widget,
 .widget.temp-widget {
   max-height: 250px;
 }
