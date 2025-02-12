@@ -45,9 +45,7 @@ powerOffButton.addEventListener("click", function () {
   clearInterval(intervalId);
   updateRandom("humidifier"); // Cập nhật gauge ngay lập tức
   const gauge = document.querySelector(".gauge.humidifier.neon");
-  // Cập nhật CSS biến --value (ở đây có thể đặt 0)
   gauge.style.setProperty("--value", 0);
-  // Hiển thị chữ "Off" thay vì số phần trăm
   gauge.querySelector(".value").textContent = "OFF";
 });
 const powerOffButton2 = document.querySelector(
@@ -283,7 +281,6 @@ function updateDurationDisplay() {
   durationDisplay.textContent = `${currentTime} / ${duration}`;
 }
 
-// Update the songs array to include title and artist information
 // Add this at the beginning of your JS file
 const songs = [
   {
@@ -457,6 +454,11 @@ function initChart() {
       },
     },
   });
+
+  // Đặt kích thước lớn hơn cho chart khi khởi động
+  const chartContainer = document.getElementById("chartContainer");
+  chartContainer.style.width = "80%";
+  chartContainer.style.height = "400px";
 }
 
 // Hàm cập nhật dữ liệu chart
@@ -485,3 +487,37 @@ function updateChart(humidifierVal, pumpVal) {
   myChart.data.datasets[1].data = chartData.map((item) => item.pump);
   myChart.update();
 }
+
+// Hàm thu nhỏ chart dần dần
+function resizeChart() {
+  const chartContainer = document.getElementById("chartContainer");
+  let width = 80; // Kích thước ban đầu
+  let height = 400;
+
+  const resizeInterval = setInterval(() => {
+    if (width > 30) {
+      width -= 0.5;
+      height -= 2.5;
+      chartContainer.style.width = `${width}%`;
+      chartContainer.style.height = `${height}px`;
+    } else {
+      clearInterval(resizeInterval);
+    }
+  }, 1000); // Thay đổi kích thước mỗi giây
+}
+
+// Hàm reset chart
+function resetChart() {
+  chartData = [];
+  myChart.data.labels = [];
+  myChart.data.datasets[0].data = [];
+  myChart.data.datasets[1].data = [];
+  myChart.update();
+}
+
+// Khởi tạo chart và bắt đầu thu nhỏ
+initChart();
+resizeChart();
+
+// Reset chart sau 30 phút
+setTimeout(resetChart, 30 * 60 * 1000);
