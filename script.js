@@ -41,7 +41,7 @@ function handlePowerOff(type) {
     const gaugeTemp = document.querySelector(".temp-widget .gauge.temp.neon");
     gaugeTemp.style.setProperty("--value", 0);
     gaugeTemp.querySelector(".value").textContent = "OFF";
-    updateChart(0, null);
+    updateChart(0, NaN);
   }
 
   if (type === "humidifier" || type === "both") {
@@ -51,7 +51,7 @@ function handlePowerOff(type) {
     );
     gaugeHumid.style.setProperty("--value", 0);
     gaugeHumid.querySelector(".value").textContent = "OFF";
-    updateChart(null, 0);
+    updateChart(NaN, 0);
   }
 }
 
@@ -69,7 +69,7 @@ function handleActive(type) {
     isTempActive = true;
     if (lastTempValue !== null) {
       updateTempGauge(lastTempValue);
-      updateChart(lastTempValue, null);
+      updateChart(lastTempValue, NaN);
     }
   }
 
@@ -77,7 +77,7 @@ function handleActive(type) {
     isHumidActive = true;
     if (lastHumidValue !== null) {
       updateGauge(lastHumidValue);
-      updateChart(null, lastHumidValue);
+      updateChart(NaN, lastHumidValue);
     }
   }
 }
@@ -402,6 +402,7 @@ function initChart() {
           backgroundColor: "rgba(255,85,0,0.1)",
           tension: 0.4,
           borderWidth: 2,
+          spanGaps: true, // Bỏ qua khoảng trống do NaN
         },
         {
           label: "Temp",
@@ -410,6 +411,7 @@ function initChart() {
           backgroundColor: "rgba(33,150,243,0.1)",
           tension: 0.4,
           borderWidth: 2,
+          spanGaps: true, // Bỏ qua khoảng trống do NaN
         },
       ],
     },
@@ -453,52 +455,32 @@ function initChart() {
 // Hàm cập nhật dữ liệu chart
 function updateChart(humidifierVal, tempVal) {
   const now = new Date();
-  const timestamp = now.getTime(); // Thêm timestamp
+  const timestamp = now.getTime();
 
   const timeLabel = `${now.getHours().toString().padStart(2, "0")}:${now
     .getMinutes()
     .toString()
     .padStart(2, "0")}:${now.getSeconds().toString().padStart(2, "0")}`;
 
-  // Thêm dữ liệu mới
-  chartData.push({
-    time: timeLabel,
-    humidifier: humidifierVal,
-    temp: tempVal,
-  });
-
-  // Giới hạn số lượng điểm dữ liệu
-  if (chartData.length > maxDataPoints) {
-    chartData.shift();
-  }
-
-  // Cập nhật chart
-  myChart.data.labels = chartData.map((item) => item.time);
-  myChart.data.datasets[0].data = chartData.map((item) => item.humidifier);
-  myChart.data.datasets[1].data = chartData.map((item) => item.temp);
-  myChart.update();
-
-  // Thêm vào cả 2 mảng dữ liệu
+  // Thay thế null bằng NaN
   const newData = {
-    time: `${now.getHours().toString().padStart(2, "0")}:${now
-      .getMinutes()
-      .toString()
-      .padStart(2, "0")}:${now.getSeconds().toString().padStart(2, "0")}`,
-    humidifier: humidifierVal,
-    temp: tempVal,
+    time: timeLabel,
+    humidifier: typeof humidifierVal === "number" ? humidifierVal : NaN,
+    temp: typeof tempVal === "number" ? tempVal : NaN,
     timestamp: timestamp,
   };
 
   chartData.push(newData);
   allChartData.push(newData);
-  // Xử lý hiển thị theo chế độ
-  // if (currentTimeRange === 0) {
-  //   if (allChartData.length > maxLiveDataPoints) {
-  //     allChartData.shift();
-  //   }
-  // }
 
-  // refreshChartDisplay();
+  if (chartData.length > maxDataPoints) {
+    chartData.shift();
+  }
+
+  myChart.data.labels = chartData.map((item) => item.time);
+  myChart.data.datasets[0].data = chartData.map((item) => item.humidifier);
+  myChart.data.datasets[1].data = chartData.map((item) => item.temp);
+  myChart.update();
 }
 
 // Hàm thu nhỏ chart dần dần
@@ -637,7 +619,7 @@ eraWidget.init({
       lastTempValue = tempValue;
       if (isTempActive) {
         updateTempGauge(tempValue);
-        updateChart(tempValue, null);
+        updateChart(tempValue, NaN);
       }
     }
 
@@ -646,7 +628,7 @@ eraWidget.init({
       lastHumidValue = humidValue;
       if (isHumidActive) {
         updateGauge(humidValue);
-        updateChart(null, humidValue);
+        updateChart(NaN, humidValue);
       }
     }
   },
