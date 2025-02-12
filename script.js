@@ -34,92 +34,6 @@ widget.addEventListener("click", () => {
   }
 });
 
-let intervalId = setInterval(() => updateRandom("both"), 1000); // Khởi tạo với cả 2 giá trị
-
-// ============ Power Off Buttons ==============
-function handlePowerOff(type) {
-  clearInterval(intervalId);
-  updateRandom(type);
-
-  // Cập nhật gauge và chart về 0
-  if (type === "pump" || type === "both") {
-    const gaugePump = document.querySelector(".pump-widget .gauge.pump.neon");
-    gaugePump.style.setProperty("--value", 0);
-    gaugePump.querySelector(".value").textContent = "OFF";
-    updateChart(0, null); // Cập nhật chart về 0 cho pump
-  }
-
-  if (type === "humidifier" || type === "both") {
-    const gaugeHumid = document.querySelector(
-      ".humidifier-widget .gauge.humidifier.neon"
-    );
-    gaugeHumid.style.setProperty("--value", 0);
-    gaugeHumid.querySelector(".value").textContent = "OFF";
-    updateChart(null, 0); // Cập nhật chart về 0 cho humidifier
-  }
-}
-
-// Gán sự kiện cho nút tắt
-document.querySelectorAll(".controls button:last-child").forEach((btn) => {
-  btn.addEventListener("click", function () {
-    const isPump = this.closest(".pump-widget");
-    handlePowerOff(isPump ? "pump" : "humidifier");
-  });
-});
-
-// ============ Active Buttons ==============
-function handleActive(type) {
-  clearInterval(intervalId);
-  updateRandom(type);
-  intervalId = setInterval(() => updateRandom(type), 1000);
-}
-
-document.querySelectorAll(".controls .active").forEach((btn) => {
-  btn.addEventListener("click", function () {
-    const isPump = this.closest(".pump-widget");
-    handleActive(isPump ? "pump" : "humidifier");
-  });
-});
-
-// ============ Core Functions ==============
-function updateRandom(type) {
-  const values = {
-    pump:
-      type === "both" || type === "pump"
-        ? Math.floor(Math.random() * 101)
-        : null,
-    humidifier:
-      type === "both" || type === "humidifier"
-        ? Math.floor(Math.random() * 101)
-        : null,
-  };
-
-  if (values.pump !== null) {
-    updatePumpGauge(values.pump);
-  }
-
-  if (values.humidifier !== null) {
-    updateGauge(values.humidifier);
-  }
-
-  updateChart(values.pump, values.humidifier);
-}
-function updatePumpGauge(newVal) {
-  // Lấy phần tử gauge có class ".gauge.pump.neon"
-  const gauge = document.querySelector(".pump-widget .gauge.pump.neon");
-  gauge.style.setProperty("--value", newVal);
-  gauge.querySelector(".value").textContent = newVal + "%";
-}
-
-function updateGauge(newVal) {
-  // Lấy phần tử gauge có class ".gauge.humidifier.neon"
-  const gauge = document.querySelector(
-    ".humidifier-widget .gauge.humidifier.neon"
-  );
-  gauge.style.setProperty("--value", newVal);
-  gauge.querySelector(".value").textContent = newVal + "%";
-}
-
 //======Cleaning Widget=======
 function updateCountdown() {
   const now = new Date();
@@ -402,7 +316,7 @@ document.addEventListener("DOMContentLoaded", () => {
 let myChart; // Biến lưu trữ đối tượng chart
 let chartData = []; // Mảng lưu trữ dữ liệu theo thời gian
 const maxDataPoints = 20;
-const maxLiveDataPoints = 60; // 60 điểm = 1 phút nếu cập nhật mỗi giây
+const maxLiveDataPoints = 30; // 60 điểm = 1 phút nếu cập nhật mỗi giây
 let allChartData = []; // Lưu toàn bộ dữ liệu
 let currentTimeRange = 0; // 0 = live
 // Hàm khởi tạo chart
@@ -414,7 +328,7 @@ function initChart() {
       labels: [],
       datasets: [
         {
-          label: "Humidifier",
+          label: "Humidity",
           data: [],
           borderColor: "#FF5500",
           backgroundColor: "rgba(255,85,0,0.1)",
@@ -422,7 +336,7 @@ function initChart() {
           borderWidth: 2,
         },
         {
-          label: "Pump",
+          label: "Temp",
           data: [],
           borderColor: "#2196F3",
           backgroundColor: "rgba(33,150,243,0.1)",
@@ -469,7 +383,7 @@ function initChart() {
 }
 
 // Hàm cập nhật dữ liệu chart
-function updateChart(humidifierVal, pumpVal) {
+function updateChart(humidifierVal, tempVal) {
   const now = new Date();
   const timestamp = now.getTime(); // Thêm timestamp
 
@@ -482,7 +396,7 @@ function updateChart(humidifierVal, pumpVal) {
   chartData.push({
     time: timeLabel,
     humidifier: humidifierVal,
-    pump: pumpVal,
+    temp: tempVal,
   });
 
   // Giới hạn số lượng điểm dữ liệu
@@ -493,7 +407,7 @@ function updateChart(humidifierVal, pumpVal) {
   // Cập nhật chart
   myChart.data.labels = chartData.map((item) => item.time);
   myChart.data.datasets[0].data = chartData.map((item) => item.humidifier);
-  myChart.data.datasets[1].data = chartData.map((item) => item.pump);
+  myChart.data.datasets[1].data = chartData.map((item) => item.temp);
   myChart.update();
 
   // Thêm vào cả 2 mảng dữ liệu
@@ -503,7 +417,7 @@ function updateChart(humidifierVal, pumpVal) {
       .toString()
       .padStart(2, "0")}:${now.getSeconds().toString().padStart(2, "0")}`,
     humidifier: humidifierVal,
-    pump: pumpVal,
+    temp: tempVal,
     timestamp: timestamp,
   };
 
@@ -594,7 +508,7 @@ function refreshChartDisplay() {
 
   myChart.data.labels = filteredData.map((item) => item.timestamp);
   myChart.data.datasets[0].data = filteredData.map((item) => item.humidifier);
-  myChart.data.datasets[1].data = filteredData.map((item) => item.pump);
+  myChart.data.datasets[1].data = filteredData.map((item) => item.temp);
   myChart.update();
 }
 
@@ -616,7 +530,7 @@ function showStatsModal(minutes) {
     <tr>
       <td>${item.time}</td>
       <td>${item.humidifier}</td>
-      <td>${item.pump}</td>
+      <td>${item.temp}</td>
     </tr>
   `
     )
@@ -632,3 +546,34 @@ function showStatsModal(minutes) {
     if (event.target === modal) modal.style.display = "none";
   };
 }
+
+//==============Add E-Ra Services============
+const eraWidget = new EraWidget();
+const temp = document.getElementById("temp-widget");
+const humi = document.getElementById("humidifier-widget");
+
+let configTemp = null,
+  configHumi = null;
+
+eraWidget.init({
+  onConfiguration: (configuration) => {
+    configTemp = configuration.realtime_configs[0]; // Lưu cấu hình nhiệt độ
+    configHumi = configuration.realtime_configs[1]; // Lưu cấu hình độ ẩm
+  },
+  onValues: (values) => {
+    console.log("Configuration:", {
+      configTemp,
+      configHumi,
+    });
+    console.log("Current values:", values);
+    if (configTemp && values[configTemp.id]) {
+      const tempValue = values[configTemp.id].value;
+      if (temp) temp.textContent = tempValue;
+    }
+
+    if (configHumi && values[configHumi.id]) {
+      const humidValue = values[configHumi.id].value;
+      if (humi) humi.textContent = humidValue;
+    }
+  },
+});
