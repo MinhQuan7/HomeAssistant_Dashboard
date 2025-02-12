@@ -34,6 +34,92 @@ widget.addEventListener("click", () => {
   }
 });
 
+let intervalId = setInterval(() => updateRandom("both"), 1000); // Khởi tạo với cả 2 giá trị
+
+// ============ Power Off Buttons ==============
+function handlePowerOff(type) {
+  clearInterval(intervalId);
+  updateRandom(type);
+
+  // Cập nhật gauge và chart về 0
+  if (type === "temp" || type === "both") {
+    const gaugeTemp = document.querySelector(".temp-widget .gauge.temp.neon");
+    gaugeTemp.style.setProperty("--value", 0);
+    gaugeTemp.querySelector(".value").textContent = "OFF";
+    updateChart(0, null); // Cập nhật chart về 0 cho Temp
+  }
+
+  if (type === "humidifier" || type === "both") {
+    const gaugeHumid = document.querySelector(
+      ".humidifier-widget .gauge.humidifier.neon"
+    );
+    gaugeHumid.style.setProperty("--value", 0);
+    gaugeHumid.querySelector(".value").textContent = "OFF";
+    updateChart(null, 0); // Cập nhật chart về 0 cho humidifier
+  }
+}
+
+// Gán sự kiện cho nút tắt
+document.querySelectorAll(".controls button:last-child").forEach((btn) => {
+  btn.addEventListener("click", function () {
+    const isTemp = this.closest(".temp-widget");
+    handlePowerOff(isTemp ? "temp" : "humidifier");
+  });
+});
+
+// ============ Active Buttons ==============
+function handleActive(type) {
+  clearInterval(intervalId);
+  updateRandom(type);
+  intervalId = setInterval(() => updateRandom(type), 1000);
+}
+
+document.querySelectorAll(".controls .active").forEach((btn) => {
+  btn.addEventListener("click", function () {
+    const isTemp = this.closest(".temp-widget");
+    handleActive(isTemp ? "temp" : "humidifier");
+  });
+});
+
+// ============ Core Functions ==============
+function updateRandom(type) {
+  const values = {
+    temp:
+      type === "both" || type === "temp"
+        ? Math.floor(Math.random() * 101)
+        : null,
+    humidifier:
+      type === "both" || type === "humidifier"
+        ? Math.floor(Math.random() * 101)
+        : null,
+  };
+
+  if (values.temp !== null) {
+    updateTempGauge(values.temp);
+  }
+
+  if (values.humidifier !== null) {
+    updateGauge(values.humidifier);
+  }
+
+  updateChart(values.temp, values.humidifier);
+}
+function updateTempGauge(newVal) {
+  // Lấy phần tử gauge có class ".gauge.temp.neon"
+  const gauge = document.querySelector(".temp-widget .gauge.temp.neon");
+  gauge.style.setProperty("--value", newVal);
+  gauge.querySelector(".value").textContent = newVal + "°C";
+}
+
+function updateGauge(newVal) {
+  // Lấy phần tử gauge có class ".gauge.humidifier.neon"
+  const gauge = document.querySelector(
+    ".humidifier-widget .gauge.humidifier.neon"
+  );
+  gauge.style.setProperty("--value", newVal);
+  gauge.querySelector(".value").textContent = newVal + "%";
+}
+
 //======Cleaning Widget=======
 function updateCountdown() {
   const now = new Date();
@@ -465,7 +551,7 @@ initChart();
 resizeChart();
 
 // Reset chart sau 30 phút
-// setTimeout(resetChart, 30 * 60 * 1000);
+setTimeout(resetChart, 30 * 60 * 1000);
 
 // ============ XỬ LÝ NÚT TIME RANGE ============
 document.querySelectorAll(".time-range").forEach((button) => {
