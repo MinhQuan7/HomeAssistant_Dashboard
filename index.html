@@ -345,6 +345,7 @@
     </div>
   </body>
   <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script>
     // Set up scene
@@ -517,64 +518,6 @@
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
       renderer.setSize(width, height);
-    });
-  </script>
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script>
-    const ctx = document.getElementById("dataChart").getContext("2d");
-    new Chart(ctx, {
-      type: "line",
-      data: {
-        labels: ["00:00", "04:00", "08:00", "12:00", "16:00", "20:00"],
-        datasets: [
-          {
-            label: "Humidifier",
-            data: [65, 59, 80, 81, 56, 55],
-            borderColor: "#FF5500",
-            backgroundColor: "rgba(255,85,0,0.1)",
-            tension: 0.4,
-            borderWidth: 2,
-          },
-          {
-            label: "Pump",
-            data: [28, 48, 40, 19, 86, 27],
-            borderColor: "#2196F3",
-            backgroundColor: "rgba(33,150,243,0.1)",
-            tension: 0.4,
-            borderWidth: 2,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            labels: {
-              color: "#fff",
-            },
-          },
-        },
-        scales: {
-          x: {
-            grid: {
-              color: "rgba(255,255,255,0.1)",
-            },
-            ticks: {
-              color: "#fff",
-            },
-          },
-          y: {
-            grid: {
-              color: "rgba(255,255,255,0.1)",
-            },
-            ticks: {
-              color: "#fff",
-            },
-          },
-        },
-      },
     });
   </script>
 </html>

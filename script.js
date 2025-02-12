@@ -35,89 +35,87 @@ widget.addEventListener("click", () => {
 });
 
 //=============Power Off Button - humidifier widget
-let intervalId = setInterval(updateRandomGauge, 1000);
+let intervalId = setInterval(randomPumpHumid, 1000);
+
 // Lấy nút power-off (nút thứ 2 trong .controls)
 const powerOffButton = document.querySelector(
   ".humidifier-widget .controls button:last-child"
 );
-// Xử lý sự kiện click cho nút power-off
 powerOffButton.addEventListener("click", function () {
-  // Dừng cập nhật random
   clearInterval(intervalId);
-  // Lấy phần tử gauge
+  updateRandom("humidifier"); // Cập nhật gauge ngay lập tức
   const gauge = document.querySelector(".gauge.humidifier.neon");
   // Cập nhật CSS biến --value (ở đây có thể đặt 0)
   gauge.style.setProperty("--value", 0);
   // Hiển thị chữ "Off" thay vì số phần trăm
   gauge.querySelector(".value").textContent = "OFF";
 });
-
-//============= Hàm cập nhật gauge với giá trị mới
-function updateGauge(newVal) {
-  // Lấy phần tử gauge có class ".gauge.humidifier.neon"
-  const gauge = document.querySelector(
-    ".humidifier-widget .gauge.humidifier.neon"
-  );
-  // Cập nhật biến CSS --value của gauge
-  gauge.style.setProperty("--value", newVal);
-  // Cập nhật text hiển thị bên trong phần tử con có class ".value"
-  gauge.querySelector(".value").textContent = newVal + "%";
-}
-
-// Hàm cập nhật gauge với giá trị ngẫu nhiên
-function updateRandomGauge() {
-  // Sinh số ngẫu nhiên từ 0 đến 100
-  const randomValue = Math.floor(Math.random() * 101);
-  // Gọi hàm cập nhật gauge với giá trị ngẫu nhiên
-  updateGauge(randomValue);
-}
-//==========Active Button - Humidifier============
-const activeButton = document.querySelector(
-  ".humidifier-widget .controls .active"
-);
-activeButton.addEventListener("click", function () {
-  clearInterval(intervalId);
-  updateRandomGauge(); // Cập nhật gauge ngay lập tức
-  intervalId = setInterval(updateRandomGauge, 1000);
-});
-
-//==========Power Off - Pump Widget=========
-let intervalId2 = setInterval(updateRandomPumpGauge, 1000);
 const powerOffButton2 = document.querySelector(
   ".pump-widget .controls button:last-child"
 );
 powerOffButton2.addEventListener("click", function () {
-  clearInterval(intervalId2);
+  clearInterval(intervalId);
+  updateRandom("humidifier"); // Cập nhật gauge ngay lập tức
   const gaugePump = document.querySelector(".pump-widget .gauge.pump.neon");
   gaugePump.style.setProperty("--value", 0);
   gaugePump.querySelector(".value").textContent = "OFF";
 });
 
-function updatePumpGauge(newVal) {
-  // Lấy phần tử gauge có class ".gauge.pump.neon"
-  const gauge = document.querySelector(".pump-widget .gauge.pump.neon");
-  // Cập nhật biến CSS --value của gauge
-  gauge.style.setProperty("--value", newVal);
-  // Cập nhật text hiển thị bên trong phần tử con có class ".value"
-  gauge.querySelector(".value").textContent = newVal + "%";
-}
-
-// Hàm cập nhật gauge với giá trị ngẫu nhiên
-function updateRandomPumpGauge() {
-  // Sinh số ngẫu nhiên từ 0 đến 100
-  const randomValue = Math.floor(Math.random() * 101);
-  // Gọi hàm cập nhật gauge với giá trị ngẫu nhiên
-  updatePumpGauge(randomValue);
-}
-//==========Active Button - Pump============
+//============Active Button==============
 const activeButtonPump = document.querySelector(
   ".pump-widget .controls .active"
 );
+const activeButtonHumidifier = document.querySelector(
+  ".humidifier-widget .controls .active"
+);
+
 activeButtonPump.addEventListener("click", function () {
   clearInterval(intervalId);
-  updateRandomPumpGauge(); // Cập nhật gauge ngay lập tức
-  intervalId = setInterval(updateRandomPumpGauge, 1000);
+  updateRandom("pump"); // Cập nhật gauge ngay lập tức
+  intervalId = setInterval(() => updateRandom("pump"), 1000);
 });
+
+activeButtonHumidifier.addEventListener("click", function () {
+  clearInterval(intervalId);
+  updateRandom("humidifier"); // Cập nhật gauge ngay lập tức
+  intervalId = setInterval(() => updateRandom("humidifier"), 1000);
+});
+
+function updateRandom(type) {
+  if (type === "pump") {
+    const randomValue = Math.floor(Math.random() * 101);
+    updatePumpGauge(randomValue);
+    updateChart(randomValue, null); // Giả sử bạn muốn cập nhật chart với giá trị pump
+  } else if (type === "humidifier") {
+    const randomHumiValue = Math.floor(Math.random() * 101);
+    updateGauge(randomHumiValue);
+    updateChart(null, randomHumiValue); // Giả sử bạn muốn cập nhật chart với giá trị humidifier
+  }
+}
+
+function randomPumpHumid() {
+  const randomValue = Math.floor(Math.random() * 101);
+  const randomHumiValue = Math.floor(Math.random() * 101);
+  updatePumpGauge(randomValue);
+  updateGauge(randomHumiValue);
+  updateChart(randomValue, randomHumiValue);
+}
+
+function updatePumpGauge(newVal) {
+  // Lấy phần tử gauge có class ".gauge.pump.neon"
+  const gauge = document.querySelector(".pump-widget .gauge.pump.neon");
+  gauge.style.setProperty("--value", newVal);
+  gauge.querySelector(".value").textContent = newVal + "%";
+}
+
+function updateGauge(newVal) {
+  // Lấy phần tử gauge có class ".gauge.humidifier.neon"
+  const gauge = document.querySelector(
+    ".humidifier-widget .gauge.humidifier.neon"
+  );
+  gauge.style.setProperty("--value", newVal);
+  gauge.querySelector(".value").textContent = newVal + "%";
+}
 
 //======Cleaning Widget=======
 function updateCountdown() {
@@ -332,6 +330,7 @@ function loadSong(index) {
   }
 }
 document.addEventListener("DOMContentLoaded", () => {
+  initChart();
   loadSong(0);
 });
 
@@ -397,4 +396,92 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initial display update
   updateDisplay(temperature);
 });
+//===========Realtime Chart===========
+let myChart; // Biến lưu trữ đối tượng chart
+const maxDataPoints = 20; // Số điểm dữ liệu tối đa hiển thị
+let chartData = []; // Mảng lưu trữ dữ liệu theo thời gian
 
+// Hàm khởi tạo chart
+function initChart() {
+  const ctx = document.getElementById("dataChart").getContext("2d");
+  myChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: [],
+      datasets: [
+        {
+          label: "Humidifier",
+          data: [],
+          borderColor: "#FF5500",
+          backgroundColor: "rgba(255,85,0,0.1)",
+          tension: 0.4,
+          borderWidth: 2,
+        },
+        {
+          label: "Pump",
+          data: [],
+          borderColor: "#2196F3",
+          backgroundColor: "rgba(33,150,243,0.1)",
+          tension: 0.4,
+          borderWidth: 2,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          labels: {
+            color: "#fff",
+          },
+        },
+      },
+      scales: {
+        x: {
+          grid: {
+            color: "rgba(255,255,255,0.1)",
+          },
+          ticks: {
+            color: "#fff",
+          },
+        },
+        y: {
+          grid: {
+            color: "rgba(255,255,255,0.1)",
+          },
+          ticks: {
+            color: "#fff",
+          },
+        },
+      },
+    },
+  });
+}
+
+// Hàm cập nhật dữ liệu chart
+function updateChart(humidifierVal, pumpVal) {
+  const now = new Date();
+  const timeLabel = `${now.getHours().toString().padStart(2, "0")}:${now
+    .getMinutes()
+    .toString()
+    .padStart(2, "0")}:${now.getSeconds().toString().padStart(2, "0")}`;
+
+  // Thêm dữ liệu mới
+  chartData.push({
+    time: timeLabel,
+    humidifier: humidifierVal,
+    pump: pumpVal,
+  });
+
+  // Giới hạn số lượng điểm dữ liệu
+  if (chartData.length > maxDataPoints) {
+    chartData.shift();
+  }
+
+  // Cập nhật chart
+  myChart.data.labels = chartData.map((item) => item.time);
+  myChart.data.datasets[0].data = chartData.map((item) => item.humidifier);
+  myChart.data.datasets[1].data = chartData.map((item) => item.pump);
+  myChart.update();
+}
