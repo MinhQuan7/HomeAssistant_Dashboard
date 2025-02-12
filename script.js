@@ -34,28 +34,24 @@ widget.addEventListener("click", () => {
   }
 });
 
-let intervalId = setInterval(() => updateRandom("both"), 1000); // Khởi tạo với cả 2 giá trị
-
 // ============ Power Off Buttons ==============
 function handlePowerOff(type) {
-  clearInterval(intervalId);
-  updateRandom(type);
-
-  // Cập nhật gauge và chart về 0
   if (type === "temp" || type === "both") {
+    isTempActive = false;
     const gaugeTemp = document.querySelector(".temp-widget .gauge.temp.neon");
     gaugeTemp.style.setProperty("--value", 0);
     gaugeTemp.querySelector(".value").textContent = "OFF";
-    updateChart(0, null); // Cập nhật chart về 0 cho Temp
+    updateChart(0, null);
   }
 
   if (type === "humidifier" || type === "both") {
+    isHumidActive = false;
     const gaugeHumid = document.querySelector(
       ".humidifier-widget .gauge.humidifier.neon"
     );
     gaugeHumid.style.setProperty("--value", 0);
     gaugeHumid.querySelector(".value").textContent = "OFF";
-    updateChart(null, 0); // Cập nhật chart về 0 cho humidifier
+    updateChart(null, 0);
   }
 }
 
@@ -69,11 +65,22 @@ document.querySelectorAll(".controls button:last-child").forEach((btn) => {
 
 // ============ Active Buttons ==============
 function handleActive(type) {
-  clearInterval(intervalId);
-  updateRandom(type);
-  intervalId = setInterval(() => updateRandom(type), 1000);
-}
+  if (type === "temp" || type === "both") {
+    isTempActive = true;
+    if (lastTempValue !== null) {
+      updateTempGauge(lastTempValue);
+      updateChart(lastTempValue, null);
+    }
+  }
 
+  if (type === "humidifier" || type === "both") {
+    isHumidActive = true;
+    if (lastHumidValue !== null) {
+      updateGauge(lastHumidValue);
+      updateChart(null, lastHumidValue);
+    }
+  }
+}
 document.querySelectorAll(".controls .active").forEach((btn) => {
   btn.addEventListener("click", function () {
     const isTemp = this.closest(".temp-widget");
@@ -81,38 +88,13 @@ document.querySelectorAll(".controls .active").forEach((btn) => {
   });
 });
 
-// ============ Core Functions ==============
-function updateRandom(type) {
-  const values = {
-    temp:
-      type === "both" || type === "temp"
-        ? Math.floor(Math.random() * 101)
-        : null,
-    humidifier:
-      type === "both" || type === "humidifier"
-        ? Math.floor(Math.random() * 101)
-        : null,
-  };
-
-  if (values.temp !== null) {
-    updateTempGauge(values.temp);
-  }
-
-  if (values.humidifier !== null) {
-    updateGauge(values.humidifier);
-  }
-
-  updateChart(values.temp, values.humidifier);
-}
 function updateTempGauge(newVal) {
-  // Lấy phần tử gauge có class ".gauge.temp.neon"
   const gauge = document.querySelector(".temp-widget .gauge.temp.neon");
   gauge.style.setProperty("--value", newVal);
   gauge.querySelector(".value").textContent = newVal + "°C";
 }
 
 function updateGauge(newVal) {
-  // Lấy phần tử gauge có class ".gauge.humidifier.neon"
   const gauge = document.querySelector(
     ".humidifier-widget .gauge.humidifier.neon"
   );
@@ -637,29 +619,35 @@ function showStatsModal(minutes) {
 const eraWidget = new EraWidget();
 const temp = document.getElementById("temp-widget");
 const humi = document.getElementById("humidifier-widget");
-
+let isTempActive = true;
+let isHumidActive = true;
+let lastTempValue = null;
+let lastHumidValue = null;
 let configTemp = null,
   configHumi = null;
 
 eraWidget.init({
   onConfiguration: (configuration) => {
-    configTemp = configuration.realtime_configs[0]; // Lưu cấu hình nhiệt độ
-    configHumi = configuration.realtime_configs[1]; // Lưu cấu hình độ ẩm
+    configTemp = configuration.realtime_configs[0];
+    configHumi = configuration.realtime_configs[1];
   },
   onValues: (values) => {
-    console.log("Configuration:", {
-      configTemp,
-      configHumi,
-    });
-    console.log("Current values:", values);
     if (configTemp && values[configTemp.id]) {
       const tempValue = values[configTemp.id].value;
-      if (temp) temp.textContent = tempValue;
+      lastTempValue = tempValue;
+      if (isTempActive) {
+        updateTempGauge(tempValue);
+        updateChart(tempValue, null);
+      }
     }
 
     if (configHumi && values[configHumi.id]) {
       const humidValue = values[configHumi.id].value;
-      if (humi) humi.textContent = humidValue;
+      lastHumidValue = humidValue;
+      if (isHumidActive) {
+        updateGauge(humidValue);
+        updateChart(null, humidValue);
+      }
     }
   },
 });
