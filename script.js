@@ -465,7 +465,7 @@ initChart();
 resizeChart();
 
 // Reset chart sau 30 phút
-setTimeout(resetChart, 30 * 60 * 1000);
+// setTimeout(resetChart, 30 * 60 * 1000);
 
 // ============ XỬ LÝ NÚT TIME RANGE ============
 document.querySelectorAll(".time-range").forEach((button) => {
