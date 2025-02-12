@@ -148,7 +148,14 @@ body {
 .widget:hover::before {
   opacity: 1;
 }
-
+.music-widget {
+  max-height: 550px;
+}
+.cleaning-widget,
+.humidifier-widget,
+.pump-widget {
+  max-height: 300px;
+}
 /* Animated gauges */
 .gauge {
   position: relative;
@@ -395,48 +402,6 @@ body {
   color: white;
 }
 
-/* Calendar styling */
-.calendar {
-  background: var(--surface);
-  border-radius: 16px;
-  padding: 24px;
-  grid-column: span 2;
-}
-.calendar .events li {
-  padding: 16px;
-  margin: 8px 0;
-  background: var(--surface-variant);
-  border-radius: 12px;
-  border: none;
-  transition: transform 0.3s ease;
-}
-
-.calendar .events li:hover {
-  transform: translateX(8px);
-}
-
-/* Animations */
-@keyframes rotate {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
 /* Weather widget enhancement */
 .widget .weather-forecast {
   display: flex;
@@ -453,21 +418,6 @@ body {
 
 .weather-day:hover {
   transform: translateY(-4px);
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .widgets {
-    grid-template-columns: 1fr;
-  }
-
-  .calendar {
-    grid-column: span 1;
-  }
-
-  .sidebar {
-    width: 60px;
-  }
 }
 
 .light-widget {
@@ -1309,6 +1259,8 @@ body {
   transition: transform 0.1s cubic-bezier(0.34, 1.56, 0.64, 1);
   transition: transform 0.1s cubic-bezier(0.68, -0.55, 0.27, 1.55),
     box-shadow 0.05s ease;
+  cursor: grab;
+  /* transition: transform 0.1s cubic-bezier(0.68, -0.55, 0.27, 1.55); */
   filter: drop-shadow(0 0 2px rgb(166, 160, 160));
   z-index: 2;
 }
@@ -1330,8 +1282,11 @@ body {
 
 .gauge-dot.active {
   animation: pulse 0.1s infinite;
+  cursor: grabbing;
 }
-
+.gauge-dot:active {
+  cursor: grabbing;
+}
 .airwave-active {
   position: relative;
   overflow: hidden;
@@ -1504,4 +1459,71 @@ body {
   height: 220px;
   margin-top: -12%;
   filter: brightness(0.9);
+}
+
+.chart-container {
+  grid-column: span 2; /* Thay từ 1/-1 thành span 2 */
+  background: linear-gradient(
+    180deg,
+    rgba(22, 24, 32, 0.8) 0%,
+    rgba(32, 34, 42, 1) 100%
+  );
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden; /*Ẩn phần hiệu ứng thừa*/
+  position: relative;
+  margin-top: -35%;
+}
+/* Hiệu ứng chỉ áp dụng cho chart */
+/* Quan trọng - tạo ngữ cảnh positioning */
+/* .chart-container canvas {
+  position: relative; 
+  
+}
+
+.chart-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  animation: chartGlow 2s infinite;
+}
+
+@keyframes chartGlow {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 200%;
+  }
+} */
+
+.chart-title {
+  color: #fff;
+  font-size: 1.2em;
+  margin-bottom: 15px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+@media (max-width: 640px) {
+  .chart-container {
+    grid-column: 1; /* Trên mobile hiển thị full width */
+  }
+}
+/* #dataChart {
+  width: 100% !important;
+  height: 300px !important;
+} */
+#dataChart {
+  width: 100% !important;
+  height: 250px !important; /* Giảm chiều cao nếu cần */
 }

@@ -336,68 +336,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 //============Air Conditioner Widget==============
-// document.addEventListener("DOMContentLoaded", () => {
-//   const temperatureValue = document.querySelector(".temperature-value");
-//   const gaugeFill = document.querySelector(".gauge-fill");
-//   const gaugeDot = document.querySelector(".gauge-dot");
-//   const decreaseButton = document.querySelector(".temp-button.decrease");
-//   const increaseButton = document.querySelector(".temp-button.increase");
-//   const airwaveButton = document.querySelector(".action-button:last-child");
-
-//   let temperature = 15;
-//   let isRandom = false;
-//   let randomInterval;
-
-//   // Calculate gauge percentage based on temperature
-//   const calculateGaugePercentage = (temp) => {
-//     const minTemp = 14;
-//     const maxTemp = 30;
-//     return ((temp - minTemp) / (maxTemp - minTemp)) * 100;
-//   };
-
-//   const updateDisplay = (temp) => {
-//     const minTemp = 14;
-//     const maxTemp = 30;
-//     const percentage = (temp - minTemp) / (maxTemp - minTemp);
-//     const rotation = percentage * 360;
-//     temperatureValue.textContent = temp;
-//     // Cập nhật góc xoay cho gauge-fill và gauge-dot
-//     gaugeFill.style.setProperty("--fill-percentage", `${rotation}deg`);
-//     gaugeDot.style.setProperty("--rotation", `${rotation}deg`);
-//   };
-//   // Temperature adjustment function
-//   const adjustTemperature = (increment) => {
-//     const newTemp = temperature + increment;
-//     if (newTemp >= 14 && newTemp <= 30) {
-//       temperature = newTemp;
-//       updateDisplay(temperature);
-//     }
-//   };
-
-//   // Event listeners for temperature buttons
-//   decreaseButton.addEventListener("click", () => adjustTemperature(-1));
-//   increaseButton.addEventListener("click", () => adjustTemperature(1));
-
-//   // Random temperature mode
-//   airwaveButton.addEventListener("click", () => {
-//     isRandom = !isRandom;
-
-//     if (isRandom) {
-//       airwaveButton.classList.add("active");
-//       randomInterval = setInterval(() => {
-//         const change = Math.random() > 0.5 ? 1 : -1;
-//         adjustTemperature(change);
-//       }, 2000);
-//     } else {
-//       airwaveButton.classList.remove("active");
-//       clearInterval(randomInterval);
-//     }
-//   });
-
-//   // Initial display update
-//   updateDisplay(temperature);
-// });
-
 document.addEventListener("DOMContentLoaded", () => {
   const temperatureValue = document.querySelector(".temperature-value");
   const gaugeFill = document.querySelector(".gauge-fill");
@@ -416,16 +354,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const maxTemp = 30;
     return ((temp - minTemp) / (maxTemp - minTemp)) * 100;
   };
-
-  // const updateDisplay = (temp) => {
-  //   const minTemp = 14;
-  //   const maxTemp = 30;
-  //   const percentage = (temp - minTemp) / (maxTemp - minTemp);
-  //   const rotation = percentage * 360;
-  //   temperatureValue.textContent = temp;
-  //   gaugeFill.style.setProperty("--fill-percentage", `${rotation}deg`);
-  //   gaugeDot.style.setProperty("--rotation", `${rotation}deg`);
-  // };
   const updateDisplay = (temp) => {
     const minTemp = 14;
     const maxTemp = 30;
@@ -469,3 +397,4 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initial display update
   updateDisplay(temperature);
 });
+

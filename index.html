@@ -185,6 +185,50 @@
               </button>
             </div>
           </div>
+          <div class="widget cleaning-widget">
+            <div class="title">Robot Reboot</div>
+            <div class="countdown-container">
+              <span>Next Cleaning In</span>
+              <div class="countdown-title">
+                <i class="fas fa-clock"></i>
+              </div>
+              <div class="countdown-wrapper">
+                <div class="countdown-item">
+                  <div class="countdown-number" id="hours">00</div>
+                  <div class="countdown-label">Hours</div>
+                </div>
+                <div class="countdown-separator">:</div>
+                <div class="countdown-item">
+                  <div class="countdown-number" id="minutes">00</div>
+                  <div class="countdown-label">Minutes</div>
+                </div>
+                <div class="countdown-separator">:</div>
+                <div class="countdown-item">
+                  <div class="countdown-number" id="seconds">00</div>
+                  <div class="countdown-label">Seconds</div>
+                </div>
+              </div>
+            </div>
+            <div class="button-container">
+              <button class="effect-button" onclick="showModal('relax')">
+                Return
+              </button>
+              <button class="effect-button" onclick="showModal('cleaning')">
+                Cleaning
+              </button>
+              <button class="effect-button" onclick="showModal('laundry')">
+                Laundry
+              </button>
+            </div>
+            <!-- Modal -->
+            <div class="modal" id="serviceModal">
+              <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2 id="modalTitle"></h2>
+                <p id="modalContent"></p>
+              </div>
+            </div>
+          </div>
           <div class="widget music-widget">
             <div class="title-musicWidget">Music Player</div>
             <div class="subtitle-musicWidget">Docked</div>
@@ -231,50 +275,6 @@
               </button>
             </div>
             <audio id="audioPlayer" src="assets/audio/thienlyoi.mp3"></audio>
-          </div>
-          <div class="widget cleaning-widget">
-            <div class="title">Robot Reboot</div>
-            <div class="countdown-container">
-              <span>Next Cleaning In</span>
-              <div class="countdown-title">
-                <i class="fas fa-clock"></i>
-              </div>
-              <div class="countdown-wrapper">
-                <div class="countdown-item">
-                  <div class="countdown-number" id="hours">00</div>
-                  <div class="countdown-label">Hours</div>
-                </div>
-                <div class="countdown-separator">:</div>
-                <div class="countdown-item">
-                  <div class="countdown-number" id="minutes">00</div>
-                  <div class="countdown-label">Minutes</div>
-                </div>
-                <div class="countdown-separator">:</div>
-                <div class="countdown-item">
-                  <div class="countdown-number" id="seconds">00</div>
-                  <div class="countdown-label">Seconds</div>
-                </div>
-              </div>
-            </div>
-            <div class="button-container">
-              <button class="effect-button" onclick="showModal('relax')">
-                Return
-              </button>
-              <button class="effect-button" onclick="showModal('cleaning')">
-                Cleaning
-              </button>
-              <button class="effect-button" onclick="showModal('laundry')">
-                Laundry
-              </button>
-            </div>
-            <!-- Modal -->
-            <div class="modal" id="serviceModal">
-              <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2 id="modalTitle"></h2>
-                <p id="modalContent"></p>
-              </div>
-            </div>
           </div>
 
           <div class="airConditioner">
@@ -336,37 +336,9 @@
               </div>
             </div>
           </div>
-          <div class="calendar">
-            <div class="header">
-              <div>
-                <div>May 1 – 7, 2024</div>
-                <div>Today</div>
-              </div>
-              <div>
-                <button>
-                  <i class="fas fa-th"> </i>
-                </button>
-                <button>
-                  <i class="fas fa-bars"> </i>
-                </button>
-              </div>
-            </div>
-            <ul class="events">
-              <li>
-                <div class="time">1:13 PM - 2:13 PM</div>
-                <div class="type">
-                  <span class="current"> </span>
-                  Current Event
-                </div>
-              </li>
-              <li>
-                <div class="time">2:13 PM - 3:13 PM</div>
-                <div class="type">
-                  <span class="future"> </span>
-                  Future Event
-                </div>
-              </li>
-            </ul>
+          <div class="chart-container">
+            <div class="chart-title">Humidifier & Pump Statistics</div>
+            <canvas id="dataChart"></canvas>
           </div>
         </div>
       </div>
@@ -545,6 +517,64 @@
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
       renderer.setSize(width, height);
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const ctx = document.getElementById("dataChart").getContext("2d");
+    new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: ["00:00", "04:00", "08:00", "12:00", "16:00", "20:00"],
+        datasets: [
+          {
+            label: "Humidifier",
+            data: [65, 59, 80, 81, 56, 55],
+            borderColor: "#FF5500",
+            backgroundColor: "rgba(255,85,0,0.1)",
+            tension: 0.4,
+            borderWidth: 2,
+          },
+          {
+            label: "Pump",
+            data: [28, 48, 40, 19, 86, 27],
+            borderColor: "#2196F3",
+            backgroundColor: "rgba(33,150,243,0.1)",
+            tension: 0.4,
+            borderWidth: 2,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            labels: {
+              color: "#fff",
+            },
+          },
+        },
+        scales: {
+          x: {
+            grid: {
+              color: "rgba(255,255,255,0.1)",
+            },
+            ticks: {
+              color: "#fff",
+            },
+          },
+          y: {
+            grid: {
+              color: "rgba(255,255,255,0.1)",
+            },
+            ticks: {
+              color: "#fff",
+            },
+          },
+        },
+      },
     });
   </script>
 </html>
