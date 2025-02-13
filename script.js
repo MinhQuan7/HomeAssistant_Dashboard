@@ -30,17 +30,31 @@ widget.addEventListener("click", () => {
   isOn = !isOn;
   if (isOn) {
     icon.classList.add("active");
-    status.textContent = "On";
+    status.textContent = "ON";
     eraWidget.triggerAction(onBedLight.action, null);
     eraWidget.triggerAction(onKitchenLight.action, null);
     console.log("Console log action", onKitchenLight.action);
   } else {
     icon.classList.remove("active");
-    status.textContent = "Off";
+    status.textContent = "OFF";
     eraWidget.triggerAction(offBedLight.action, null);
   }
 });
 
+status.addEventListener("click", () => {
+  isOn = !isOn;
+  if (isOn) {
+    icon.classList.add("active");
+    status.textContent = "ON";
+    eraWidget.triggerAction(onBedLight.action, null);
+    eraWidget.triggerAction(onKitchenLight.action, null);
+    console.log("Console log action", onKitchenLight.action);
+  } else {
+    icon.classList.remove("active");
+    status.textContent = "OFF";
+    eraWidget.triggerAction(offBedLight.action, null);
+  }
+});
 // ============ Power Off Buttons ==============
 function handlePowerOff(type) {
   if (type === "temp" || type === "both") {
