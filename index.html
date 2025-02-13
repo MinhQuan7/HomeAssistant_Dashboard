@@ -42,53 +42,17 @@
           <div class="weather-widget">
             <div class="weather-header">
               <div class="weather-main">
-                <h1 class="weather-title">Sunny</h1>
-                <div class="weather-subtitle">Demo Weather South</div>
-                <div class="weather-temp">21.6°C</div>
+                <h1 class="weather-title">Weather W</h1>
+                <div class="weather-subtitle">Sunday</div>
+                <div class="weather-temp">14.6°C</div>
               </div>
             </div>
 
-            <div class="canvas-container" id="weather-canvas"></div>
-            <!-- 
-            <div class="forecast">
-              <div class="forecast-scroll">
-                <div class="forecast-day">
-                  <span>Wed</span>
-                  <div class="forecast-temps">
-                    <span class="high-temp">22°</span>
-                    <span class="low-temp">15°</span>
-                  </div>
-                </div>
-                <div class="forecast-day">
-                  <span>Thu</span>
-                  <div class="forecast-temps">
-                    <span class="high-temp">19°</span>
-                    <span class="low-temp">8°</span>
-                  </div>
-                </div>
-                <div class="forecast-day">
-                  <span>Fri</span>
-                  <div class="forecast-temps">
-                    <span class="high-temp">15°</span>
-                    <span class="low-temp">9°</span>
-                  </div>
-                </div>
-                <div class="forecast-day">
-                  <span>Sat</span>
-                  <div class="forecast-temps">
-                    <span class="high-temp">12°</span>
-                    <span class="low-temp">6°</span>
-                  </div>
-                </div>
-                <div class="forecast-day">
-                  <span>Sun</span>
-                  <div class="forecast-temps">
-                    <span class="high-temp">14°</span>
-                    <span class="low-temp">7°</span>
-                  </div>
-                </div>
+            <div class="canvas-container" id="weather-canvas">
+              <div class="iconWeather">
+                <img src="assets/imgs/rainy.png" alt="icon" />
               </div>
-            </div> -->
+            </div>
           </div>
           <!-- Widget Bed Light -->
           <div class="widget">
@@ -100,15 +64,10 @@
               <div class="status">OFF</div>
             </div>
           </div>
-          <div class="widget">
+          <div class="widget apple-style">
             <div class="widget-header">
               <div class="icon">
-                <svg width="45" height="45" viewBox="0 0 24 24" fill="none">
-                  <path
-                    d="M12 2C7.58 2 4 5.58 4 10c0 2.52 1.17 4.76 3 6.24V18c0 1.1.9 2 2 2h6c1.1 0 2-.9 2-2v-1.76c1.83-1.48 3-3.72 3-6.24 0-4.42-3.58-8-8-8z"
-                    fill="currentColor"
-                  />
-                </svg>
+                <img src="assets/imgs/3dKitchenLight.png" alt="icon" />
               </div>
               <div class="widget-info">
                 <div class="widget-title">Kitchen Lights</div>
@@ -129,8 +88,15 @@
             </div>
           </div>
           <div class="widget">
-            <div class="widget-title">Living Room Lights</div>
-            <div class="widget-valueLivingRoom">71%</div>
+            <div class="widget-header">
+              <div class="icon">
+                <img src="assets/imgs/FloorLamp.png" alt="icon" />
+              </div>
+              <div class="widget-info">
+                <div class="widget-title">Living Room Lights</div>
+                <div class="widget-valueLivingRoom">71%</div>
+              </div>
+            </div>
             <div class="slider-container">
               <div class="slider-track">
                 <input
@@ -393,178 +359,4 @@
   </body>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="script.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script>
-    // Set up scene
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({
-      antialias: true,
-      alpha: true,
-    });
-
-    renderer.setSize(200, 200);
-    renderer.setClearColor(0x000000, 0);
-    document.getElementById("weather-canvas").appendChild(renderer.domElement);
-
-    // Create sun core
-    const sunGeometry = new THREE.SphereGeometry(0.8, 32, 32);
-    const sunMaterial = new THREE.MeshPhongMaterial({
-      color: 0xffd700,
-      emissive: 0xff8c00,
-      specular: 0xffffff,
-      shininess: 100,
-    });
-    const sun = new THREE.Group();
-    const sunCore = new THREE.Mesh(sunGeometry, sunMaterial);
-    sun.add(sunCore);
-
-    // Create sun aura
-    const auraGeometry = new THREE.SphereGeometry(1, 32, 32);
-    const auraMaterial = new THREE.MeshPhongMaterial({
-      color: 0xffd700,
-      emissive: 0xff8c00,
-      transparent: true,
-      opacity: 0.3,
-    });
-    const aura = new THREE.Mesh(auraGeometry, auraMaterial);
-    sun.add(aura);
-
-    // Create stylized rays
-    const rayCount = 12;
-    const rayGeometry = new THREE.ConeGeometry(0.1, 0.8, 8);
-    const rayMaterial = new THREE.MeshPhongMaterial({
-      color: 0xffd700,
-      emissive: 0xff8c00,
-      transparent: true,
-      opacity: 0.6,
-    });
-
-    for (let i = 0; i < rayCount; i++) {
-      const ray = new THREE.Mesh(rayGeometry, rayMaterial);
-      const angle = (i / rayCount) * Math.PI * 2;
-      const distance = 1.2;
-      ray.position.set(
-        Math.cos(angle) * distance,
-        Math.sin(angle) * distance,
-        0
-      );
-      ray.rotation.z = angle + Math.PI / 2;
-      sun.add(ray);
-    }
-
-    // Create sparkles
-    const sparkleCount = 20;
-    const sparkleGeometry = new THREE.SphereGeometry(0.05, 8, 8);
-    const sparkleMaterial = new THREE.MeshPhongMaterial({
-      color: 0xffffff,
-      emissive: 0xffff00,
-    });
-
-    const sparkles = [];
-    for (let i = 0; i < sparkleCount; i++) {
-      const sparkle = new THREE.Mesh(sparkleGeometry, sparkleMaterial);
-      const angle = Math.random() * Math.PI * 2;
-      const radius = 0.8 + Math.random() * 0.6;
-      sparkle.position.set(
-        Math.cos(angle) * radius,
-        Math.sin(angle) * radius,
-        (Math.random() - 0.5) * 0.5
-      );
-      sparkle.userData = {
-        originalY: sparkle.position.y,
-        phase: Math.random() * Math.PI * 2,
-      };
-      sparkles.push(sparkle);
-      sun.add(sparkle);
-    }
-
-    scene.add(sun);
-
-    // Add lights
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(ambientLight);
-
-    const pointLight = new THREE.PointLight(0xffffff, 1);
-    pointLight.position.set(5, 5, 5);
-    scene.add(pointLight);
-
-    camera.position.z = 5;
-
-    // Mouse interaction
-    let isDragging = false;
-    let previousMousePosition = {
-      x: 0,
-      y: 0,
-    };
-
-    renderer.domElement.addEventListener("mousedown", (e) => {
-      isDragging = true;
-    });
-
-    renderer.domElement.addEventListener("mousemove", (e) => {
-      if (isDragging) {
-        const deltaMove = {
-          x: e.offsetX - previousMousePosition.x,
-          y: e.offsetY - previousMousePosition.y,
-        };
-
-        sun.rotation.y += deltaMove.x * 0.01;
-        sun.rotation.x += deltaMove.y * 0.01;
-      }
-
-      previousMousePosition = {
-        x: e.offsetX,
-        y: e.offsetY,
-      };
-    });
-
-    renderer.domElement.addEventListener("mouseup", () => {
-      isDragging = false;
-    });
-
-    // Animation
-    const animate = () => {
-      requestAnimationFrame(animate);
-
-      if (!isDragging) {
-        sun.rotation.y += 0.005;
-      }
-
-      // Animate rays
-      sun.children.forEach((child, index) => {
-        if (child.geometry === rayGeometry) {
-          child.scale.y = 1 + Math.sin(Date.now() * 0.003 + index) * 0.2;
-        }
-      });
-
-      // Animate sparkles
-      sparkles.forEach((sparkle) => {
-        sparkle.position.y =
-          sparkle.userData.originalY +
-          Math.sin(Date.now() * 0.005 + sparkle.userData.phase) * 0.1;
-        sparkle.scale.setScalar(
-          0.8 + Math.sin(Date.now() * 0.003 + sparkle.userData.phase) * 0.2
-        );
-      });
-
-      // Animate aura
-      aura.scale.setScalar(1 + Math.sin(Date.now() * 0.002) * 0.1);
-
-      renderer.render(scene, camera);
-    };
-
-    animate();
-
-    // Handle resize
-    window.addEventListener("resize", () => {
-      const container = document.getElementById("weather-canvas");
-      const width = container.clientWidth;
-      const height = container.clientHeight;
-
-      camera.aspect = width / height;
-      camera.updateProjectionMatrix();
-      renderer.setSize(width, height);
-    });
-  </script>
 </html>

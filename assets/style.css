@@ -151,6 +151,14 @@ body {
 .music-widget {
   max-height: 650px;
 }
+@media (max-width: 1650px) {
+  .music-widget {
+    max-height: 370px;
+  }
+  .chart-container {
+    margin-top: 0 !important;
+  }
+}
 .cleaning-widget,
 .humidifier-widget,
 .temp-widget {
@@ -457,13 +465,20 @@ body {
   font-size: 16px;
   font-weight: 500;
   margin-bottom: 4px;
+  margin-left: 5px;
+  white-space: nowrap;
 }
-
+.widget-valueLivingRoom,
 .widget-value {
   color: rgba(255, 255, 255, 0.6);
   font-size: 14px;
+  margin-left: 5px;
 }
-
+.canvas-container-img {
+  width: 50px;
+  height: 50px;
+  position: relative;
+}
 .slider-container {
   width: 100%;
   max-width: 300px;
@@ -474,20 +489,21 @@ body {
 
 .slider-fill {
   position: absolute;
-  background: #ff5a6b;
+  background: linear-gradient(90deg, #fa8836, #44eef7bc);
   top: 0;
   left: 0;
   width: 71%;
   height: 100%;
   border-radius: 6px;
 }
+
 .slider-fill-livingRoom {
   position: absolute;
   top: 0;
   left: 0;
   width: 71%;
   height: 100%;
-  background: #09d2ff;
+  background: linear-gradient(90deg, #ff8095, #ffb5b5);
   border-radius: 6px;
 }
 .slider-thumb {
@@ -1210,7 +1226,15 @@ body {
   margin-bottom: 2rem;
   text-align: center;
 }
-
+.icon img {
+  width: 70px;
+  height: 70px;
+  padding-left: 8px;
+}
+.iconWeather img {
+  width: 170px;
+  height: 170px;
+}
 .ac-image img {
   max-width: 24rem;
   margin: 0 auto;
@@ -1561,24 +1585,19 @@ body {
 }
 
 .chart-container {
-  grid-column: span 2; /* Thay từ 1/-1 thành span 2 */
+  grid-column: span 2;
   background: linear-gradient(
     180deg,
     rgba(22, 24, 32, 0.8) 0%,
     rgba(32, 34, 42, 1) 100%
   );
-  /* background:linear-gradient(
-    180deg,
-    rgba(22, 24, 32, 0.5) 0%,
-    rgba(32, 34, 42, 0.7) 100%
-  ) !important ; */
   border-radius: 16px;
   padding: 20px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  overflow: hidden; /*Ẩn phần hiệu ứng thừa*/
+  overflow: hidden;
   position: relative;
-  margin-top: -53%;
+  margin-top: -370px;
   max-height: 300px;
 }
 
@@ -1618,11 +1637,6 @@ body {
   background: rgb(34, 211, 238);
   box-shadow: 0 0 5px rgb(34, 211, 238), 0 0 5px rgb(34, 211, 238),
     0 0 10px rgba(34, 211, 238, 0.8);
-}
-@media (max-width: 640px) {
-  .chart-container {
-    grid-column: 1; /* Trên mobile hiển thị full width */
-  }
 }
 
 #dataChart {
