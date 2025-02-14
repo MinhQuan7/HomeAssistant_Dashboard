@@ -39,21 +39,6 @@
           </div>
         </div>
         <div class="widgets">
-          <div class="widget weather-widget">
-            <div class="weather-header">
-              <div class="weather-main">
-                <h1 class="weather-title">Weather</h1>
-                <div class="weather-subtitle">Sunday</div>
-                <div class="weather-temp">14.6°C</div>
-              </div>
-            </div>
-
-            <div class="canvas-container" id="weather-canvas">
-              <div class="iconWeather">
-                <img src="assets/imgs/rainy.png" alt="icon" />
-              </div>
-            </div>
-          </div>
           <!-- Widget Bed Light -->
           <div class="widget bedLight-widget">
             <div class="title">Bed Light</div>
@@ -62,50 +47,6 @@
                 <img src="assets/imgs/tableLamp.png" alt="imgBedLights" />
               </div>
               <div class="status">OFF</div>
-            </div>
-          </div>
-          <div class="widget cleaning-widget">
-            <div class="title">Robot Reboot</div>
-            <div class="countdown-container">
-              <span>Next Cleaning In</span>
-              <div class="countdown-title">
-                <i class="fas fa-clock"></i>
-              </div>
-              <div class="countdown-wrapper">
-                <div class="countdown-item">
-                  <div class="countdown-number" id="hours">00</div>
-                  <div class="countdown-label">Hours</div>
-                </div>
-                <div class="countdown-separator">:</div>
-                <div class="countdown-item">
-                  <div class="countdown-number" id="minutes">00</div>
-                  <div class="countdown-label">Minutes</div>
-                </div>
-                <div class="countdown-separator">:</div>
-                <div class="countdown-item">
-                  <div class="countdown-number" id="seconds">00</div>
-                  <div class="countdown-label">Seconds</div>
-                </div>
-              </div>
-            </div>
-            <div class="button-container">
-              <button class="effect-button" onclick="showModal('relax')">
-                Return
-              </button>
-              <button class="effect-button" onclick="showModal('cleaning')">
-                Cleaning
-              </button>
-              <button class="effect-button" onclick="showModal('laundry')">
-                Laundry
-              </button>
-            </div>
-            <!-- Modal -->
-            <div class="modal" id="serviceModal">
-              <div class="modal-content">
-                <span class="close"></span>
-                <h2 id="modalTitle"></h2>
-                <p id="modalContent"></p>
-              </div>
             </div>
           </div>
           <div class="widget apple-style">
@@ -185,6 +126,21 @@
               <button>
                 <i class="fas fa-power-off"></i>
               </button>
+            </div>
+          </div>
+          <div class="widget weather-widget">
+            <div class="weather-header">
+              <div class="weather-main">
+                <h1 class="weather-title">Weather</h1>
+                <div class="weather-subtitle">Sunday</div>
+                <div class="weather-temp">14.6°C</div>
+              </div>
+            </div>
+
+            <div class="canvas-container" id="weather-canvas">
+              <div class="iconWeather">
+                <img src="assets/imgs/rainy.png" alt="icon" />
+              </div>
             </div>
           </div>
 
@@ -269,19 +225,25 @@
             </div>
             <audio id="audioPlayer" src="assets/audio/thienlyoi.mp3"></audio>
           </div>
+          <div class="widget chart-container">
+            <div class="chart-title">Humidity & Temperature Statistics</div>
+            <canvas id="dataChart"></canvas>
+            <div class="chart-controls">
+              <button class="time-range active" data-minutes="0">Live</button>
+              <button class="time-range" data-minutes="5">Analyze data</button>
+            </div>
+          </div>
 
           <div class="widget airConditioner">
             <div class="header">
               <div class="title-">Air Conditioner</div>
             </div>
-
             <div class="ac-image">
               <img
                 src="assets/imgs/airConditioner.png"
                 alt="Air Conditioner Unit"
               />
             </div>
-
             <div class="main-controls">
               <div class="temperature-control">
                 <div class="temperature-gauge">
@@ -299,42 +261,10 @@
                 </div>
               </div>
 
-              <div class="right-controls">
-                <div class="temp-controls">
-                  <button class="temp-button decrease">-</button>
-                  <div>Actions</div>
-                  <button class="temp-button increase">+</button>
-                </div>
-
-                <div class="actions">
-                  <button class="action-button active">Cooling</button>
-                  <button class="action-button">Heating</button>
-                  <button class="action-button">Airwave</button>
-                </div>
+              <div class="temp-controls">
+                <button class="temp-button decrease">-</button>
+                <button class="temp-button increase">+</button>
               </div>
-            </div>
-
-            <div class="bottom-stats">
-              <div class="stat">
-                <div class="stat-value">0</div>
-                <div class="stat-label">Timer</div>
-              </div>
-              <div class="stat">
-                <div class="stat-value">2</div>
-                <div class="stat-label">hours</div>
-              </div>
-              <div class="stat">
-                <div class="stat-value">36</div>
-                <div class="stat-label">Humidity</div>
-              </div>
-            </div>
-          </div>
-          <div class="widget chart-container">
-            <div class="chart-title">Humidity & Temperature Statistics</div>
-            <canvas id="dataChart"></canvas>
-            <div class="chart-controls">
-              <button class="time-range active" data-minutes="0">Live</button>
-              <button class="time-range" data-minutes="5">Analyze data</button>
             </div>
           </div>
           <div id="statsModal" class="modal">

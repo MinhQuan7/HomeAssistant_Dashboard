@@ -122,84 +122,6 @@ function updateGauge(newVal) {
   gauge.style.setProperty("--value", newVal);
   gauge.querySelector(".value").textContent = newVal + "%";
 }
-
-//======Cleaning Widget=======
-function updateCountdown() {
-  const now = new Date();
-  const target = new Date();
-  target.setHours(target.getHours() + 16);
-
-  const diff = target - now;
-
-  const hours = Math.floor(diff / (1000 * 60 * 60));
-  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-  // Update hours
-  const hoursElement = document.getElementById("hours");
-  if (hoursElement.textContent !== hours.toString().padStart(2, "0")) {
-    hoursElement.classList.add("flip");
-    setTimeout(() => hoursElement.classList.remove("flip"), 600);
-  }
-  hoursElement.textContent = hours.toString().padStart(2, "0");
-
-  // Update minutes
-  const minutesElement = document.getElementById("minutes");
-  if (minutesElement.textContent !== minutes.toString().padStart(2, "0")) {
-    minutesElement.classList.add("flip");
-    setTimeout(() => minutesElement.classList.remove("flip"), 600);
-  }
-  minutesElement.textContent = minutes.toString().padStart(2, "0");
-
-  // Update seconds
-  const secondsElement = document.getElementById("seconds");
-  if (secondsElement.textContent !== seconds.toString().padStart(2, "0")) {
-    secondsElement.classList.add("flip");
-    setTimeout(() => secondsElement.classList.remove("flip"), 600);
-  }
-  secondsElement.textContent = seconds.toString().padStart(2, "0");
-}
-
-// Update countdown every second
-setInterval(updateCountdown, 1000);
-updateCountdown(); // Initial call
-
-// Modal functionality (giữ nguyên như cũ)
-const modal = document.getElementById("serviceModal");
-const modalTitle = document.getElementById("modalTitle");
-const modalContent = document.getElementById("modalContent");
-
-function showModal(service) {
-  const contents = {
-    relax: {
-      title: "Relax Time",
-      content: "Take a moment to relax and recharge.",
-    },
-    cleaning: {
-      title: "Cleaning Service",
-      content: "Professional cleaning service at your convenience.",
-    },
-    laundry: {
-      title: "Laundry Service",
-      content: "Expert laundry service for your clothes and linens.",
-    },
-  };
-
-  modalTitle.textContent = contents[service].title;
-  modalContent.textContent = contents[service].content;
-  modal.style.display = "block";
-}
-
-document.querySelector(".close").onclick = function () {
-  modal.style.display = "none";
-};
-
-window.onclick = function (event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-};
-
 //==============Music Widget============
 const audioPlayer = document.getElementById("audioPlayer");
 const playButton = document.querySelector(".playButton-musicWidget");
@@ -381,23 +303,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Event listeners for temperature buttons
   decreaseButton.addEventListener("click", () => adjustTemperature(-1));
   increaseButton.addEventListener("click", () => adjustTemperature(1));
-
-  // Random temperature mode
-  airwaveButton.addEventListener("click", () => {
-    isRandom = !isRandom;
-
-    if (isRandom) {
-      airwaveButton.classList.add("active");
-      randomInterval = setInterval(() => {
-        const change = Math.random() > 0.5 ? 1 : -1;
-        adjustTemperature(change);
-      }, 2000);
-    } else {
-      airwaveButton.classList.remove("active");
-      clearInterval(randomInterval);
-    }
-  });
-
   // Initial display update
   updateDisplay(temperature);
 });
@@ -443,6 +348,7 @@ function initChart() {
         legend: {
           labels: {
             color: "#fff",
+            size: 12,
           },
         },
       },
@@ -453,6 +359,7 @@ function initChart() {
           },
           ticks: {
             color: "#fff",
+            size: 10,
           },
         },
         y: {
@@ -461,6 +368,10 @@ function initChart() {
           },
           ticks: {
             color: "#fff",
+            font: {
+              size: 11, // Tăng nhẹ kích thước chữ
+              family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+            },
           },
         },
       },
@@ -469,8 +380,6 @@ function initChart() {
 
   // Đặt kích thước lớn hơn cho chart khi khởi động
   const chartContainer = document.getElementById("chartContainer");
-  // chartContainer.style.width = "80%";
-  // chartContainer.style.height = "400px";
 }
 
 // Hàm cập nhật dữ liệu chart
@@ -661,4 +570,75 @@ eraWidget.init({
       }
     }
   },
+});
+//===========Full Screen Feature==========
+// Add fullscreen button HTML to your document first
+const fullscreenButton = document.createElement('button');
+fullscreenButton.innerHTML = '<i class="fas fa-expand"></i>';
+fullscreenButton.className = 'fullscreen-button';
+document.body.appendChild(fullscreenButton);
+
+// Add fullscreen functionality
+let isFullscreen = false;
+
+function toggleFullscreen() {
+  if (!isFullscreen) {
+    // Enter fullscreen
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen();
+    } else if (document.documentElement.mozRequestFullScreen) {
+      document.documentElement.mozRequestFullScreen();
+    } else if (document.documentElement.webkitRequestFullscreen) {
+      document.documentElement.webkitRequestFullscreen();
+    } else if (document.documentElement.msRequestFullscreen) {
+      document.documentElement.msRequestFullscreen();
+    }
+    fullscreenButton.innerHTML = '<i class="fas fa-compress"></i>';
+  } else {
+    // Exit fullscreen
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    }
+    fullscreenButton.innerHTML = '<i class="fas fa-expand"></i>';
+  }
+  isFullscreen = !isFullscreen;
+}
+
+// Event listener for fullscreen button
+fullscreenButton.addEventListener('click', toggleFullscreen);
+
+// Update button icon when fullscreen changes through other means (like Esc key)
+document.addEventListener('fullscreenchange', function() {
+  isFullscreen = !!document.fullscreenElement;
+  fullscreenButton.innerHTML = isFullscreen ? 
+    '<i class="fas fa-compress"></i>' : 
+    '<i class="fas fa-expand"></i>';
+});
+
+// Handle fullscreen change for different browsers
+document.addEventListener('webkitfullscreenchange', function() {
+  isFullscreen = !!document.webkitFullscreenElement;
+  fullscreenButton.innerHTML = isFullscreen ? 
+    '<i class="fas fa-compress"></i>' : 
+    '<i class="fas fa-expand"></i>';
+});
+
+document.addEventListener('mozfullscreenchange', function() {
+  isFullscreen = !!document.mozFullScreenElement;
+  fullscreenButton.innerHTML = isFullscreen ? 
+    '<i class="fas fa-compress"></i>' : 
+    '<i class="fas fa-expand"></i>';
+});
+
+document.addEventListener('MSFullscreenChange', function() {
+  isFullscreen = !!document.msFullscreenElement;
+  fullscreenButton.innerHTML = isFullscreen ? 
+    '<i class="fas fa-compress"></i>' : 
+    '<i class="fas fa-expand"></i>';
 });

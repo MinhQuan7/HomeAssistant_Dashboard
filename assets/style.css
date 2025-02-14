@@ -157,14 +157,35 @@ body {
 .music-widget {
   max-height: 650px;
 }
+
 @media (max-width: 1460px) {
-  .chart-container {
-    margin-top: 0 !important;
-  }
   .airConditioner {
-    max-width: 565px !important;
+    grid-column: span 2; /* Vẫn span 2 columns */
+    width: 100%;
+    max-width: none; /* Bỏ giới hạn max-width */
+    /* Sử dụng minmax để đảm bảo responsive tốt hơn */
+    min-width: min(100%, 700px);
+  }
+
+  .main-controls {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+    margin-top: -2rem;
+  }
+
+  .temperature-control {
+    width: clamp(140px, 25vw, 180px);
+    height: clamp(140px, 25vw, 180px);
+  }
+
+  .right-controls {
+    width: 100%;
+    align-items: center;
   }
 }
+
 @media (min-width: 1461px) {
   .airConditioner {
     max-width: 600px;
@@ -635,7 +656,7 @@ body {
 
 .status {
   position: absolute;
-  bottom: 15px;
+  bottom: 75px;
   color: rgba(255, 255, 255, 0.6);
   font-size: 17px;
   font-weight: bold;
@@ -1193,22 +1214,19 @@ body {
 }
 /*========Air Conditioner Widget======*/
 .airConditioner {
-  grid-column: 2 / 4;
-  grid-row: 1 / 3;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
   background: linear-gradient(
     180deg,
     rgba(22, 24, 32, 0.5) 0%,
     rgba(32, 34, 42, 0.7) 100%
-  ) !important;
+  );
   border-radius: 16px;
-  padding: 24px;
   color: white;
   font-family: "Arial", sans-serif;
-  width: 100%;
-  grid-column: span 2;
-  min-width: 280px; 
-  position: relative;
-  padding: clamp(16px, 2vw, 24px);
+  max-height: 400px;
+  padding: clamp(8px, 1vw, 12px);
+  gap: 8px;
 }
 
 .header {
@@ -1227,7 +1245,6 @@ body {
 }
 
 .ac-image {
-  margin-bottom: 2rem;
   text-align: center;
 }
 .icon img {
@@ -1326,24 +1343,28 @@ body {
 }
 
 .main-controls {
+  position: relative;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 2rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+  margin-top: -2rem; /* Dịch cả khối controls lên trên */
 }
 
 .temperature-control {
   position: relative;
-  margin-top: -12%;
-  width: clamp(200px, 25vw, 300px);
-  height: clamp(200px, 25vw, 300px);
-  margin-bottom: clamp(1rem, 2vw, 1.5rem);
+  width: 100%;
+  height: 100%;
+  transform: scale(0.8);
+  transform-origin: center top;
+  margin-top: -20px;
 }
 
 .temperature-gauge {
   position: relative;
   width: 100%;
   height: 100%;
+  transform: scale(0.8);
+  transform-origin: center;
 }
 
 .gauge-ticks {
@@ -1352,17 +1373,17 @@ body {
   border-radius: 50%;
   border: 8px solid rgb(31, 41, 55);
 }
+
 .gauge-fill {
   position: absolute;
   inset: 0;
   border-radius: 50%;
   background: conic-gradient(
     from 0deg,
-    /* Đổi từ -90deg thành 0deg để bắt đầu từ 12h */ rgb(190, 255, 0)
-      var(--fill-percentage),
+    rgb(190, 255, 1) var(--fill-percentage),
     rgb(32, 32, 32) var(--fill-percentage)
   );
-  box-shadow: 0 0 10px rgba(190, 255, 0, 0.3), 0 0 20px rgba(190, 255, 0, 0.2);
+  box-shadow: 0 0 30px rgba(190, 255, 0, 0.3), 0 0 20px rgba(190, 255, 0, 0.3);
   transform-origin: center;
   transition: all 0.01s ease;
   overflow: hidden;
@@ -1496,26 +1517,30 @@ body {
 }
 
 .temperature-unit {
-  color: rgb(156, 163, 175);
-  font-size: 0.875rem;
+  font-size: 3rem;
+  font-weight: 300;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.8),
+    0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 .right-controls {
-  width: 100%;
-  max-width: 28rem;
-  margin-top: -8%;
+  display: flex;
+  align-items: center;
 }
-
 .temp-controls {
+  position: absolute;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  top: 70%;
+  transform: translateY(-50%);
+  padding: 0 calc(100% - 40px);
 }
 
 .temp-button {
-  width: 4rem;
-  height: 4rem;
+  width: 60px;
+  height: 60px;
   background: rgb(31, 41, 55);
   border: none;
   border-radius: 1rem;
@@ -1523,7 +1548,14 @@ body {
   cursor: pointer;
   transition: all 0.2s ease;
   padding: clamp(6px, 1vw, 10px);
-  font-size: clamp(14px, 1.5vw, 18px);
+  font-size: 14px;
+}
+.temp-button.decrease {
+  order: -1;
+  left: -50px;
+}
+.temp-button.increase {
+  right: -50px;
 }
 
 .temp-button:hover {
@@ -1531,33 +1563,6 @@ body {
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
   transform: scale(1.05);
 }
-
-.actions {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-}
-
-.action-button {
-  padding: 1rem;
-  background: rgb(31, 41, 55);
-  border: none;
-  border-radius: 1rem;
-  color: white;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.action-button.active {
-  background: rgb(34, 211, 238);
-  box-shadow: 0 0 5px rgb(34, 211, 238), 0 0 10px rgb(34, 211, 238),
-    0 0 15px rgba(34, 211, 238, 0.8);
-}
-
-.action-button:hover {
-  transform: translateY(-2px);
-}
-
 .bottom-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1603,7 +1608,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.1);
   overflow: hidden;
   position: relative;
-  max-height: 350px;
+  max-height: 450px;
 }
 
 .chart-title {
@@ -1839,4 +1844,53 @@ body {
   .stats-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/*============FullScreen Feature=========*/
+.fullscreen-button {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.fullscreen-button:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.fullscreen-button i {
+  color: white;
+  font-size: 18px;
+}
+
+/* Adjust button position in fullscreen mode */
+:fullscreen .fullscreen-button {
+  top: 30px;
+  right: 30px;
+}
+
+/* Vendor prefixes for different browsers */
+:-webkit-full-screen .fullscreen-button {
+  top: 30px;
+  right: 30px;
+}
+
+:-moz-full-screen .fullscreen-button {
+  top: 30px;
+  right: 30px;
+}
+
+:-ms-fullscreen .fullscreen-button {
+  top: 30px;
+  right: 30px;
 }
