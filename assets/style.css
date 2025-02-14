@@ -155,9 +155,35 @@ body {
   opacity: 1;
 }
 .music-widget {
-  max-height: 650px;
+  max-height: 570px;
+  overflow-y: auto;
 }
 
+/* Custom scrollbar styling */
+.music-widget::-webkit-scrollbar {
+  width: 8px;
+}
+
+.music-widget::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.music-widget::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+.music-widget::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Firefox scrollbar styling */
+.music-widget {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
+}
 @media (max-width: 1460px) {
   .airConditioner {
     grid-column: span 2; /* Vẫn span 2 columns */
@@ -290,6 +316,11 @@ body {
 .widget.humidifier-widget,
 .widget.temp-widget {
   max-height: 250px;
+}
+.widget.bedLight-widget,
+.widget.apple-style,
+.widget.livingRoom-widget {
+  min-height: 250px;
 }
 .gauge.temp.neon {
   --size: 150px; /* Đường kính gauge */
@@ -497,14 +528,14 @@ body {
   font-size: 16px;
   font-weight: 500;
   margin-bottom: 4px;
-  margin-left: 5px;
+  margin-left: 15px;
   white-space: nowrap;
 }
 .widget-valueLivingRoom,
 .widget-value {
   color: rgba(255, 255, 255, 0.6);
-  font-size: 14px;
-  margin-left: 5px;
+  font-size: 16px;
+  margin-left: 15px;
 }
 .canvas-container-img {
   width: 50px;
@@ -517,7 +548,7 @@ body {
   max-width: 300px;
   height: 52px;
   box-sizing: border-box;
-  margin-top: 10%;
+  margin-top: 20%;
 }
 
 .slider-fill {
@@ -593,13 +624,6 @@ body {
   background: white;
   cursor: pointer;
   border: none;
-}
-/* Widget Bed Light  */
-.widget {
-  background: rgba(22, 24, 32, 0.5);
-  border-radius: 20px;
-  padding: 20px;
-  transition: all 0.3s ease;
 }
 
 /* Khi đèn bật, toàn bộ widget sẽ có background trắng mờ */
@@ -1070,7 +1094,7 @@ body {
   color: white;
   border-radius: 12px;
   padding: 20px;
-  width: 300px;
+  width: 345px;
   font-family: "Arial", sans-serif;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
@@ -1248,9 +1272,10 @@ body {
   text-align: center;
 }
 .icon img {
-  width: 70px;
-  height: 70px;
+  width: 100px;
+  height: 100px;
   padding-left: 8px;
+  padding-top: 40px;
 }
 .iconWeather img {
   width: 170px;

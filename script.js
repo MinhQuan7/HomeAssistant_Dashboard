@@ -268,18 +268,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const gaugeDot = document.querySelector(".gauge-dot");
   const decreaseButton = document.querySelector(".temp-button.decrease");
   const increaseButton = document.querySelector(".temp-button.increase");
-  const airwaveButton = document.querySelector(".action-button:last-child");
 
   let temperature = 15;
-  let isRandom = false;
-  let randomInterval;
 
-  // Calculate gauge percentage based on temperature
-  const calculateGaugePercentage = (temp) => {
-    const minTemp = 14;
-    const maxTemp = 30;
-    return ((temp - minTemp) / (maxTemp - minTemp)) * 100;
-  };
   const updateDisplay = (temp) => {
     const minTemp = 14;
     const maxTemp = 30;
@@ -297,6 +288,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (newTemp >= 14 && newTemp <= 30) {
       temperature = newTemp;
       updateDisplay(temperature);
+      eraWidget.triggerAction(onAirConditioner.action, null, {
+        value: temperature,
+      });
     }
   };
 
@@ -540,7 +534,8 @@ let configTemp = null,
   onBedLight = null,
   offBedLight = null,
   onKitchenLight = null,
-  onLivingLight = null;
+  onLivingLight = null,
+  onAirConditioner = null;
 
 eraWidget.init({
   onConfiguration: (configuration) => {
@@ -550,6 +545,7 @@ eraWidget.init({
     offBedLight = configuration.actions[1];
     onKitchenLight = configuration.actions[2];
     onLivingLight = configuration.actions[3];
+    onAirConditioner = configuration.actions[4];
   },
   onValues: (values) => {
     if (configTemp && values[configTemp.id]) {
@@ -573,9 +569,9 @@ eraWidget.init({
 });
 //===========Full Screen Feature==========
 // Add fullscreen button HTML to your document first
-const fullscreenButton = document.createElement('button');
+const fullscreenButton = document.createElement("button");
 fullscreenButton.innerHTML = '<i class="fas fa-expand"></i>';
-fullscreenButton.className = 'fullscreen-button';
+fullscreenButton.className = "fullscreen-button";
 document.body.appendChild(fullscreenButton);
 
 // Add fullscreen functionality
@@ -611,34 +607,34 @@ function toggleFullscreen() {
 }
 
 // Event listener for fullscreen button
-fullscreenButton.addEventListener('click', toggleFullscreen);
+fullscreenButton.addEventListener("click", toggleFullscreen);
 
 // Update button icon when fullscreen changes through other means (like Esc key)
-document.addEventListener('fullscreenchange', function() {
+document.addEventListener("fullscreenchange", function () {
   isFullscreen = !!document.fullscreenElement;
-  fullscreenButton.innerHTML = isFullscreen ? 
-    '<i class="fas fa-compress"></i>' : 
-    '<i class="fas fa-expand"></i>';
+  fullscreenButton.innerHTML = isFullscreen
+    ? '<i class="fas fa-compress"></i>'
+    : '<i class="fas fa-expand"></i>';
 });
 
 // Handle fullscreen change for different browsers
-document.addEventListener('webkitfullscreenchange', function() {
+document.addEventListener("webkitfullscreenchange", function () {
   isFullscreen = !!document.webkitFullscreenElement;
-  fullscreenButton.innerHTML = isFullscreen ? 
-    '<i class="fas fa-compress"></i>' : 
-    '<i class="fas fa-expand"></i>';
+  fullscreenButton.innerHTML = isFullscreen
+    ? '<i class="fas fa-compress"></i>'
+    : '<i class="fas fa-expand"></i>';
 });
 
-document.addEventListener('mozfullscreenchange', function() {
+document.addEventListener("mozfullscreenchange", function () {
   isFullscreen = !!document.mozFullScreenElement;
-  fullscreenButton.innerHTML = isFullscreen ? 
-    '<i class="fas fa-compress"></i>' : 
-    '<i class="fas fa-expand"></i>';
+  fullscreenButton.innerHTML = isFullscreen
+    ? '<i class="fas fa-compress"></i>'
+    : '<i class="fas fa-expand"></i>';
 });
 
-document.addEventListener('MSFullscreenChange', function() {
+document.addEventListener("MSFullscreenChange", function () {
   isFullscreen = !!document.msFullscreenElement;
-  fullscreenButton.innerHTML = isFullscreen ? 
-    '<i class="fas fa-compress"></i>' : 
-    '<i class="fas fa-expand"></i>';
+  fullscreenButton.innerHTML = isFullscreen
+    ? '<i class="fas fa-compress"></i>'
+    : '<i class="fas fa-expand"></i>';
 });
