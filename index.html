@@ -39,10 +39,10 @@
           </div>
         </div>
         <div class="widgets">
-          <div class="weather-widget">
+          <div class="widget weather-widget">
             <div class="weather-header">
               <div class="weather-main">
-                <h1 class="weather-title">Weather W</h1>
+                <h1 class="weather-title">Weather</h1>
                 <div class="weather-subtitle">Sunday</div>
                 <div class="weather-temp">14.6°C</div>
               </div>
@@ -55,13 +55,57 @@
             </div>
           </div>
           <!-- Widget Bed Light -->
-          <div class="widget">
+          <div class="widget bedLight-widget">
             <div class="title">Bed Light</div>
             <div class="content-wrapper">
               <div class="light-icon" id="bedLightIcon">
                 <img src="assets/imgs/tableLamp.png" alt="imgBedLights" />
               </div>
               <div class="status">OFF</div>
+            </div>
+          </div>
+          <div class="widget cleaning-widget">
+            <div class="title">Robot Reboot</div>
+            <div class="countdown-container">
+              <span>Next Cleaning In</span>
+              <div class="countdown-title">
+                <i class="fas fa-clock"></i>
+              </div>
+              <div class="countdown-wrapper">
+                <div class="countdown-item">
+                  <div class="countdown-number" id="hours">00</div>
+                  <div class="countdown-label">Hours</div>
+                </div>
+                <div class="countdown-separator">:</div>
+                <div class="countdown-item">
+                  <div class="countdown-number" id="minutes">00</div>
+                  <div class="countdown-label">Minutes</div>
+                </div>
+                <div class="countdown-separator">:</div>
+                <div class="countdown-item">
+                  <div class="countdown-number" id="seconds">00</div>
+                  <div class="countdown-label">Seconds</div>
+                </div>
+              </div>
+            </div>
+            <div class="button-container">
+              <button class="effect-button" onclick="showModal('relax')">
+                Return
+              </button>
+              <button class="effect-button" onclick="showModal('cleaning')">
+                Cleaning
+              </button>
+              <button class="effect-button" onclick="showModal('laundry')">
+                Laundry
+              </button>
+            </div>
+            <!-- Modal -->
+            <div class="modal" id="serviceModal">
+              <div class="modal-content">
+                <span class="close"></span>
+                <h2 id="modalTitle"></h2>
+                <p id="modalContent"></p>
+              </div>
             </div>
           </div>
           <div class="widget apple-style">
@@ -107,50 +151,6 @@
                   class="brightness-sliderLivingRom"
                 />
                 <div class="slider-fill-livingRoom"></div>
-              </div>
-            </div>
-          </div>
-          <div class="widget cleaning-widget">
-            <div class="title">Robot Reboot</div>
-            <div class="countdown-container">
-              <span>Next Cleaning In</span>
-              <div class="countdown-title">
-                <i class="fas fa-clock"></i>
-              </div>
-              <div class="countdown-wrapper">
-                <div class="countdown-item">
-                  <div class="countdown-number" id="hours">00</div>
-                  <div class="countdown-label">Hours</div>
-                </div>
-                <div class="countdown-separator">:</div>
-                <div class="countdown-item">
-                  <div class="countdown-number" id="minutes">00</div>
-                  <div class="countdown-label">Minutes</div>
-                </div>
-                <div class="countdown-separator">:</div>
-                <div class="countdown-item">
-                  <div class="countdown-number" id="seconds">00</div>
-                  <div class="countdown-label">Seconds</div>
-                </div>
-              </div>
-            </div>
-            <div class="button-container">
-              <button class="effect-button" onclick="showModal('relax')">
-                Return
-              </button>
-              <button class="effect-button" onclick="showModal('cleaning')">
-                Cleaning
-              </button>
-              <button class="effect-button" onclick="showModal('laundry')">
-                Laundry
-              </button>
-            </div>
-            <!-- Modal -->
-            <div class="modal" id="serviceModal">
-              <div class="modal-content">
-                <span class="close"></span>
-                <h2 id="modalTitle"></h2>
-                <p id="modalContent"></p>
               </div>
             </div>
           </div>
@@ -270,7 +270,7 @@
             <audio id="audioPlayer" src="assets/audio/thienlyoi.mp3"></audio>
           </div>
 
-          <div class="airConditioner">
+          <div class="widget airConditioner">
             <div class="header">
               <div class="title-">Air Conditioner</div>
             </div>
