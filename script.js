@@ -14,8 +14,8 @@ const valueLivingRoom = document.querySelector(".widget-valueLivingRoom");
 const sliderFillLivingRoom = document.querySelector(".slider-fill-livingRoom");
 
 sliderLivingRoom.addEventListener("input", function () {
-  const value = this.value;
-  sliderFillLivingRoom.style.width = value + "%";
+  const value = parseFloat(this.value); // Ép kiểu về float
+  sliderLivingRoom.style.width = value + "%";
   valueLivingRoom.textContent = value + "%";
   eraWidget.triggerAction(onLivingLight.action, null, { value: value });
 });

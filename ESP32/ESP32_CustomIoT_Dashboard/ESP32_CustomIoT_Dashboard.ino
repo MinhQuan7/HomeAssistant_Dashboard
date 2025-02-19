@@ -110,13 +110,13 @@ ERA_WRITE(V2) {
 ERA_WRITE(V3) {
     int value = param.getInt();  // Nhận giá trị 0-100
     int pwmValue = map(value, 0, 100, 0, 255);  // Chuyển đổi sang dải PWM phù hợp
-    analogWrite(kitchenLight, value);
+    analogWrite(kitchenLight, pwmValue);
 }
 
 ERA_WRITE(V4) {
     int value = param.getInt();
     int pwmValue = map(value, 0, 100, 0, 255);
-    analogWrite(livingLight, value);
+    analogWrite(livingLight, pwmValue);
 }
 
 ERA_WRITE(V5) {
