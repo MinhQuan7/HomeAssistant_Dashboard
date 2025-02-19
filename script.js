@@ -15,7 +15,7 @@ const sliderFillLivingRoom = document.querySelector(".slider-fill-livingRoom");
 
 sliderLivingRoom.addEventListener("input", function () {
   const value = parseFloat(this.value); // Ép kiểu về float
-  sliderLivingRoom.style.width = value + "%";
+  sliderFill.style.width = value + "%";
   valueLivingRoom.textContent = value + "%";
   eraWidget.triggerAction(onLivingLight.action, null, { value: value });
 });
@@ -32,8 +32,6 @@ widget.addEventListener("click", () => {
     icon.classList.add("active");
     status.textContent = "ON";
     eraWidget.triggerAction(onBedLight.action, null);
-    eraWidget.triggerAction(onKitchenLight.action, null);
-    console.log("Console log action", onKitchenLight.action);
   } else {
     icon.classList.remove("active");
     status.textContent = "OFF";
@@ -47,8 +45,6 @@ status.addEventListener("click", () => {
     icon.classList.add("active");
     status.textContent = "ON";
     eraWidget.triggerAction(onBedLight.action, null);
-    eraWidget.triggerAction(onKitchenLight.action, null);
-    console.log("Console log action", onKitchenLight.action);
   } else {
     icon.classList.remove("active");
     status.textContent = "OFF";
