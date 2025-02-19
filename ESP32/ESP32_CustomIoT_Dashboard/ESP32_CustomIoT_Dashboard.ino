@@ -31,6 +31,12 @@
     #include <ERa/ERaButton.hpp>
 #endif
 
+//Declare pin 
+#define bedLight 12
+#define kitchenLight 19
+#define livingLight 21
+#define airConditioner 23
+
 const char ssid[] = "eoh.io";
 const char pass[] = "Eoh@2020";
 
@@ -97,6 +103,31 @@ void timerEvent() {
   ERa.virtualWrite(V1, humidity);
 }
 
+ERA_WRITE(V2) {
+    uint8_t value = param.getInt();
+    digitalWrite( bedLight, value ? HIGH : LOW);
+}
+ERA_WRITE(V3) {
+    int value = param.getInt();  // Nhận giá trị 0-100
+    int pwmValue = map(value, 0, 100, 0, 255);  // Chuyển đổi sang dải PWM phù hợp
+    analogWrite(kitchenLight, value);
+}
+
+ERA_WRITE(V4) {
+    int value = param.getInt();
+    int pwmValue = map(value, 0, 100, 0, 255);
+    analogWrite(livingLight, value);
+}
+
+ERA_WRITE(V5) {
+    int value = param.getInt();
+    Serial.print("Receive data of V5: ");
+    Serial.println(value);
+    int pwmValue = map(value, 0, 100, 0, 255);
+    analogWrite(airConditioner, value);
+}
+
+
 void setup() {
     /* Setup debug console */
 #if defined(ERA_DEBUG)
@@ -124,7 +155,10 @@ void setup() {
     /* Set scan WiFi. If activated, the board will scan
        and connect to the best quality WiFi. */
     ERa.setScanWiFi(true);
-
+    pinMode(bedLight,OUTPUT);
+    pinMode(kitchenLight,OUTPUT);
+    pinMode(livingLight,OUTPUT);
+    pinMode(airConditioner,OUTPUT);
     /* Initializing the ERa library. */
     ERa.begin(ssid, pass);
 

@@ -3,7 +3,7 @@ const sliderFill = document.querySelector(".slider-fill");
 const valueDisplay = document.querySelector(".widget-value");
 // eraWidget.triggerAction(actionOn.action, null);
 slider.addEventListener("input", function () {
-  const value = this.value;
+  const value = parseFloat(this.value); // Ép kiểu về float
   sliderFill.style.width = value + "%";
   valueDisplay.textContent = value + "%";
   eraWidget.triggerAction(onKitchenLight.action, null, { value: value });
