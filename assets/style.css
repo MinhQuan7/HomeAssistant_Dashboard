@@ -188,7 +188,7 @@ body {
   .airConditioner {
     grid-column: span 1;
     min-width: auto;
-    max-width: 320px;
+    max-width: 380px;
     min-width: min(100%, 600px);
   }
 
@@ -731,7 +731,11 @@ body {
   backdrop-filter: blur(10px);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
-
+.airConditioner,
+.livingRoom-widget {
+  width: 100%;
+  max-width: 380px;
+}
 .weather-header {
   display: flex;
   align-items: flex-start;
