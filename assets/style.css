@@ -186,11 +186,10 @@ body {
 }
 @media (max-width: 1460px) {
   .airConditioner {
-    grid-column: span 2; /* Vẫn span 2 columns */
-    width: 100%;
-    max-width: none; /* Bỏ giới hạn max-width */
-    /* Sử dụng minmax để đảm bảo responsive tốt hơn */
-    min-width: min(100%, 700px);
+    grid-column: span 1; 
+    min-width: auto;
+    max-width: 320px; 
+    min-width: min(100%, 600px);
   }
 
   .main-controls {
@@ -202,10 +201,13 @@ body {
   }
 
   .temperature-control {
-    width: clamp(140px, 25vw, 180px);
-    height: clamp(140px, 25vw, 180px);
+    width: 60px; 
+    height: 60px;
   }
 
+  .ac-image img {
+    max-width: 12rem;
+  }
   .right-controls {
     width: 100%;
     align-items: center;
@@ -214,7 +216,8 @@ body {
 
 @media (min-width: 1461px) {
   .airConditioner {
-    max-width: 600px;
+    width: 100%;
+    max-width: 700px;
   }
 }
 .cleaning-widget,
@@ -1281,10 +1284,6 @@ body {
   width: 170px;
   height: 170px;
 }
-.ac-image img {
-  max-width: 24rem;
-  margin: 0 auto;
-}
 /*==============Playlist Components==========*/
 /* Playlist section */
 .playlist-musicWidget {
@@ -1381,7 +1380,6 @@ body {
   height: 100%;
   transform: scale(0.8);
   transform-origin: center top;
-  margin-top: -20px;
 }
 
 .temperature-gauge {
@@ -1390,6 +1388,8 @@ body {
   height: 100%;
   transform: scale(0.8);
   transform-origin: center;
+  aspect-ratio: 1 / 1; /* Đảm bảo tỷ lệ luôn là 1:1 */
+  border-radius: 50%;
 }
 
 .gauge-ticks {
@@ -1613,10 +1613,11 @@ body {
 }
 
 .ac-image img {
-  width: 320px;
-  height: 220px;
+  max-width: 19rem; /* Giảm kích thước ảnh */
+  height: auto;
+  aspect-ratio: 1/1;
+  object-fit: contain;
   margin-top: -12%;
-  filter: brightness(0.9);
 }
 
 .chart-container {
@@ -1700,8 +1701,12 @@ body {
   }
 
   .temperature-control {
-    width: 180px;
-    height: 180px;
+    width: 120px !important;
+    height: 120px !important;
+  }
+
+  .ac-image img {
+    max-width: 12rem;
   }
 }
 
